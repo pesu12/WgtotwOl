@@ -4,7 +4,7 @@ namespace Anax\HTMLForm;
  * Anax base class for wrapping sessions.
  *
  */
-class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
+class CFormAdminLoginUser extends \Anax\HTMLForm\CForm
 {
     use \Anax\DI\TInjectionaware,
         \Anax\MVC\TRedirectHelpers;
@@ -15,23 +15,17 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
      public function __construct()
      {
        parent::__construct([], [
-         'addname' => [
-             'type'        => 'text',
-             'label'       => 'Name of user to add:',
-             'required'    => true,
-             'validation'  => ['not_empty'],
-         ],
 
          'addemail' => [
              'type'        => 'text',
-             'label'       => 'Email of user to add:',
+             'label'       => 'Epost:',
              'required'    => true,
              'validation'  => ['not_empty', 'email_adress'],
          ],
 
-         'addacronym' => [
+         'addpassword' => [
              'type'        => 'text',
-             'label'       => 'Acronym of user to add:',
+             'label'       => 'Lösenord:',
              'required'    => true,
              'validation'  => ['not_empty'],
          ],
@@ -86,14 +80,12 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
     {
       $this->users = new \Anax\User\User();
       $this->users->setDI($this->di);
-      date_default_timezone_set('Europe/Berlin');
-       $this->users->save([
-         'Username' => $_POST['addname'],
-         'Acronym' => $_POST['addacronym'],
-         'Email' => $_POST['addemail'],
-         'Userpassword' => password_hash($_POST['addacronym'], PASSWORD_DEFAULT),
-       ]);
-       $this->redirectTo('index.php/user');
+      $all = $this->users->findAll();
+      foreach ($all as $user) :
+        if(($user->Email==$_POST['addemail'])) {
+            $this->redirectTo('index.php/user/displayuser/'.$user->Id);
+        }
+      endforeach;
     }
 
     /**

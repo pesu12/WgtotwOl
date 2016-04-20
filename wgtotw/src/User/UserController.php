@@ -41,6 +41,26 @@ class UserController implements \Anax\DI\IInjectionAware
     ]);
   }
 
+  /**
+   *login with user.
+   *
+   * @param string $acronym of user to add.
+   *
+   * @return void
+   */
+  public function loginAction()
+  {
+     $this->di->session();
+     $form = new \Anax\HTMLForm\CFormAdminLoginUser();
+     $form->setDI($this->di);
+     $form->check();
+     $this->di->theme->setTitle("Logga in");
+     $this->di->views->add('default/page', [
+       'title' => "Logga in",
+       'content' => $form->getHTML()
+     ]);
+  }
+
 
   /**
   * Display user details.
@@ -52,15 +72,48 @@ class UserController implements \Anax\DI\IInjectionAware
 
   public function displayuserAction($id = null)
   {
+    $this->users->setDI($this->di);
+    $this->users->theme->addStylesheet('css/anax-grid/style.php');
+    $user = $this->users->find($id);
+    $this->theme->setTitle("Användare");
+    $this->views->add('users/viewuser', [
+        'id' => $id,
+        'user' => $user,
+        'title' => "Användare",
+      ]);
+
+    $this->users->setDI($this->di);
+    $this->theme->setTitle("Skapa fråga");
+    $this->views->add('users/viewaddquestionlink', [
+      'id' => $id,
+      'title' => "Ställa Fråga",
+    ]);
+
+    $this->users->setDI($this->di);
+    $allresponses = $this->users->findResponsesForUser($id);
+    $this->theme->setTitle("Svara på en fråga");
+    $this->views->add('users/viewuserresponses', [
+      'responses' => $allresponses,
+      'title' => "Svara på fråga",
+    ]);
+  }
+
+  /**
+  * Add new question for user.
+  *
+  * @param string $id of user to add.
+  *
+  * @return void
+  */
+  public function addQuestionAction($id = null)
+  {
     $this->di->session();
-    $form = new \Anax\HTMLForm\CFormPsWebDisplayUser();
+    $form = new \Anax\HTMLForm\CFormPsWebAddUser();
     $form->setDI($this->di);
     $form->check();
-
-    $this->di->theme->setTitle("Users Display details Menu");
-
+    $this->di->theme->setTitle("Users Add Menu");
     $this->di->views->add('default/page', [
-      'title' => "Users Display Details Menu",
+      'title' => "Users Add Menu",
       'content' => $form->getHTML()
     ]);
   }

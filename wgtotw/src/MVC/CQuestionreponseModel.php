@@ -5,7 +5,7 @@ namespace Anax\MVC;
  * Model for Users.
  *
  */
-class CQuestionresponseModel implements \Anax\DI\IInjectionAware
+class CQuestionResponseModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
 

@@ -6,7 +6,7 @@ namespace Anax\Question;
 * A controller for users and admin related events.
 *
 */
-class QuestionController implements \Anax\DI\IInjectionAware
+class UserQuestionController implements \Anax\DI\IInjectionAware
 {
   use \Anax\DI\TInjectable;
 
@@ -17,8 +17,8 @@ class QuestionController implements \Anax\DI\IInjectionAware
   */
   public function initialize()
   {
-    $this->questions = new \Anax\Question\Question();
-    $this->questions->setDI($this->di);
+    $this->questiontags = new \Anax\UserQuestion\UserQuestions();
+    $this->questiontags->setDI($this->di);
   }
 
   /**
@@ -30,9 +30,8 @@ class QuestionController implements \Anax\DI\IInjectionAware
   */
   public function addAction()
   {
-    $id = $this->request->getGet('id');
     $this->di->session();
-    $form = new \Anax\HTMLForm\CFormQuestionAdd($id);
+    $form = new \Anax\HTMLForm\CFormQuestionAdd();
     $form->setDI($this->di);
     $form->check();
     $this->di->theme->setTitle("Lägg till fråga");
@@ -51,7 +50,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
   * @return void
   */
 
-  public function displayuserAction()
+  public function displayuserAction($id = null)
   {
     $this->di->session();
     $form = new \Anax\HTMLForm\CFormPsWebDisplayUser();
