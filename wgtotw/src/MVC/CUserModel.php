@@ -208,7 +208,7 @@ class CUserModel implements \Anax\DI\IInjectionAware
       $this->setProperties($values);
       $values = $this->getProperties();
 
-      if (isset($values['id'])) {
+      if (isset($values['Id'])) {
           return $this->update($values);
       } else {
           return $this->create($values);
@@ -246,13 +246,13 @@ class CUserModel implements \Anax\DI\IInjectionAware
       $values = array_values($values);
 
       // Its update, remove id and use as where-clause
-      unset($keys['id']);
-      $values[] = $this->id;
+      unset($keys['Id']);
+      $values[] = $this->Id;
 
       $this->db->update(
         $this->getSource(),
         $keys,
-        "id = ?"
+        "Id = ?"
       );
 
       return $this->db->execute($values);

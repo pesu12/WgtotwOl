@@ -17,7 +17,7 @@ return [
 */
 
     // Display details on what happens
-    'verbose' => false,
+    'verbose' => true,
 
     // Throw a more verbose exception when failing to connect
     //'debug_connect' => 'true',

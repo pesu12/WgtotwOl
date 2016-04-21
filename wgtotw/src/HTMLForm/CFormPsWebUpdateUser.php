@@ -12,14 +12,16 @@ class CFormPsWebUpdateUser extends \Anax\HTMLForm\CForm
      * Constructor
      *
      */
-     public function __construct()
+     public function __construct($users)
      {
+       $_POST['id']=$users->Id;
        parent::__construct([], [
-         'sdeletename' => [
-         'type'        => 'text',
-         'label'       => 'Name of user to soft delete:',
-         'required'    => true,
-         'validation'  => ['not_empty'],
+         'name' => [
+            'type'        => 'text',
+            'label'       => 'Namn:',
+             'value'       => $users->Username,
+             'required'    => true,
+            'validation'  => ['not_empty'],
      ],
 
      'submit' => [
@@ -70,19 +72,16 @@ class CFormPsWebUpdateUser extends \Anax\HTMLForm\CForm
      */
     public function callbackSuccess($form)
     {
-      $this->users = new \Anax\Users\User();
+      $this->users = new \Anax\User\User();
       $this->users->setDI($this->di);
-      $all = $this->users->findAll();
-      $now = gmdate('Y-m-d H:i:s');
-      foreach ($all as $user) :
-        if($user->name==$_POST['sdeletename']) {
-       $user = $this->users->find($user->id);
-
-       $user->deleted = $now;
-       $user->save();
-     }
-    endforeach;
-       $this->redirectTo('index.php/users/active/notactiveusers');
+       $this->users->save([
+         'Id'       => $_POST['id'],
+         'Username' => $_POST['name'],
+         'Acronym' => 'pelle',
+         'Email' => 'sundberg_p@yahoo.com',
+         'Userpassword'        => 'test',
+       ]);
+//       $this->redirectTo('index.php/user');
     }
 
     /**

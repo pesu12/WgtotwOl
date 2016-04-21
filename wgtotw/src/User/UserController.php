@@ -126,14 +126,16 @@ class UserController implements \Anax\DI\IInjectionAware
   public function updateAction()
   {
     $this->di->session();
-    $form = new \Anax\HTMLForm\CFormPsWebUpdateUser();
+    $users = new \Anax\MVC\CUserModel();
+    $users->setDI($this->di);
+    $form = new \Anax\HTMLForm\CFormPsWebUpdateUser($users->find($_GET['id']));
     $form->setDI($this->di);
     $form->check();
 
-    $this->di->theme->setTitle("Users Delete Menu");
+    $this->di->theme->setTitle("Uppdatera användare");
 
     $this->di->views->add('default/page', [
-      'title' => "Users Soft Delete (update) Menu",
+      'title' => "Uppdatera användare",
       'content' => $form->getHTML()
     ]);
   }
