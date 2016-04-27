@@ -138,6 +138,14 @@ class QuestionresponseController implements \Anax\DI\IInjectionAware
          'responses' => $allResponses,
          'title' => "Svar till frågan",
        ]);
+
+       $this->questions->setDI($this->di);
+       $this->theme->setTitle("Lägg till nytt svar");
+       $this->views->add('questionresponses/viewaddresponselink', [
+         'id' => $id,
+         'title' => "Lägg till nytt svar",
+       ]);
+
     }
 
     /**

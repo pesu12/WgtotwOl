@@ -216,6 +216,41 @@ class CUserModel implements \Anax\DI\IInjectionAware
     }
 
     /**
+ * Save current object/row.
+ *
+ * @param array $values key/values to save or empty to use object properties.
+ *
+ * @return boolean true or false if saving went okey.
+ */
+public function saveToDB($values = [])
+{
+    $this->setProperties($values);
+    $values = $this->getProperties($values);
+    if (isset($values['Id'])) {
+        return $this->update($values);
+    } else {
+        return $this->create($values);
+    }
+}
+
+    /**
+    * edit a user.
+    *
+    * @param array $user with all details.
+    * @param $id with user id number.
+    * @param $key with user page.
+    *
+    * @return void
+    */
+    public function saveEdit($user, $id)
+    {
+      $users = $this->session->get('User', []);
+      $users[$id] = $user;
+      $this->session->set('User', $users);
+      $this->update($users[$id]);
+    }
+
+    /**
      * Set object properties.
      *
      * @param array $properties with properties to set.
@@ -234,14 +269,14 @@ class CUserModel implements \Anax\DI\IInjectionAware
 
 
    /**
-    * Update row.
-    *
-    * @param array $values key/values to save.
-    *
-    * @return boolean true or false if saving went okey.
-    */
-   public function update($values)
-   {
+   * Update row.
+   *
+   * @param array $values key/values to save.
+   *
+   * @return boolean true or false if saving went okey.
+   */
+  public function update($values)
+  {
       $keys   = array_keys($values);
       $values = array_values($values);
 
@@ -250,14 +285,13 @@ class CUserModel implements \Anax\DI\IInjectionAware
       $values[] = $this->Id;
 
       $this->db->update(
-        $this->getSource(),
-        $keys,
-        "Id = ?"
+          $this->getSource($values),
+          $keys,
+          "Id = ?"
       );
 
       return $this->db->execute($values);
-   }
-
+  }
    /**
     * Build the where part.
     *

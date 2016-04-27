@@ -17,21 +17,21 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
        parent::__construct([], [
          'addname' => [
              'type'        => 'text',
-             'label'       => 'Name of user to add:',
+             'label'       => 'Användarnamn:',
              'required'    => true,
              'validation'  => ['not_empty'],
          ],
 
          'addemail' => [
              'type'        => 'text',
-             'label'       => 'Email of user to add:',
+             'label'       => 'Email:',
              'required'    => true,
              'validation'  => ['not_empty', 'email_adress'],
          ],
 
          'addacronym' => [
              'type'        => 'text',
-             'label'       => 'Acronym of user to add:',
+             'label'       => 'Akronym:',
              'required'    => true,
              'validation'  => ['not_empty'],
          ],

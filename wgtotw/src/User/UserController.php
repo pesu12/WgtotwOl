@@ -31,12 +31,13 @@ class UserController implements \Anax\DI\IInjectionAware
   public function addAction()
   {
     $this->di->session();
+    $this->users->theme->addStylesheet('css/anax-grid/style.php');    
     $form = new \Anax\HTMLForm\CFormPsWebAddUser();
     $form->setDI($this->di);
     $form->check();
-    $this->di->theme->setTitle("Users Add Menu");
+    $this->di->theme->setTitle("Lägg till ny användare");
     $this->di->views->add('default/page', [
-      'title' => "Users Add Menu",
+      'title' => "Lägg till ny användare",
       'content' => $form->getHTML()
     ]);
   }
@@ -108,6 +109,7 @@ class UserController implements \Anax\DI\IInjectionAware
   public function addQuestionAction($id = null)
   {
     $this->di->session();
+    $this->users->theme->addStylesheet('css/anax-grid/style.php');
     $form = new \Anax\HTMLForm\CFormPsWebAddUser();
     $form->setDI($this->di);
     $form->check();
@@ -119,26 +121,57 @@ class UserController implements \Anax\DI\IInjectionAware
   }
 
   /**
-  * Get ussr to update(soft delete).
+  * Get ussr to update.
   *
   * @return void
   */
   public function updateAction()
   {
-    $this->di->session();
+    $this->users->theme->addStylesheet('css/anax-grid/style.php');
     $users = new \Anax\MVC\CUserModel();
     $users->setDI($this->di);
-    $form = new \Anax\HTMLForm\CFormPsWebUpdateUser($users->find($_GET['id']));
+    $user = $this->users->find($_GET['id']);
+    $form = new \Anax\HTMLForm\CFormPsWebUpdateUser($user);
     $form->setDI($this->di);
     $form->check();
 
-    $this->di->theme->setTitle("Uppdatera användare");
-
     $this->di->views->add('default/page', [
-      'title' => "Uppdatera användare",
-      'content' => $form->getHTML()
+        'title' => "Uppdatera användare",
+        'content' => $form->getHTML()
     ]);
   }
+
+  /**
+* Save an editid user.
+*
+* @param $id with user id number.
+*
+* @return void
+*/
+public function saveEditAction($id)
+{
+  $isPosted = $this->request->getPost('doSaveEdit');
+
+  if (!$isPosted) {
+    $this->response->redirect($this->request->getPost('redirect'));
+  }
+
+  $users = new \Anax\MVC\CUserModel();
+  $users->setDI($this->di);
+
+  $editedUser = [
+    'Id' => $id,
+    'Username'      => $this->request->getPost('Username'),
+    'Acronym'       => $this->request->getPost('Acronym'),
+    'Email'      => $this->request->getPost('Email'),
+    'Userpassword'      => 'test',
+  ];
+
+  $users->update($editedUser);
+
+//  $this->response->redirect($this->request->getPost('redirect'));
+}
+
 
   /**
   * List all users.

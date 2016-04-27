@@ -122,7 +122,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
   */
   public function idAction($id = null)
   {
-
+    $this->questions->theme->addStylesheet('css/anax-grid/style.php');
     $this->questions->setDI($this->di);
     $allTags = $this->questions->findAllTags($id);
     $this->theme->setTitle("Taggar till frågan");
