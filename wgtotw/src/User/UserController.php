@@ -31,7 +31,7 @@ class UserController implements \Anax\DI\IInjectionAware
   public function addAction()
   {
     $this->di->session();
-    $this->users->theme->addStylesheet('css/anax-grid/style.php');    
+    $this->users->theme->addStylesheet('css/anax-grid/style.php');
     $form = new \Anax\HTMLForm\CFormPsWebAddUser();
     $form->setDI($this->di);
     $form->check();
@@ -83,19 +83,42 @@ class UserController implements \Anax\DI\IInjectionAware
         'title' => "Användare",
       ]);
 
+      $this->users->setDI($this->di);
+      $this->views->add('users/viewuserupdatelink', [
+        'id' => $id,
+        'title' => "",
+      ]);
+/*
     $this->users->setDI($this->di);
-    $this->theme->setTitle("Skapa fråga");
+    $all = $this->users->findQuestionsForUser($id);
+    $this->theme->setTitle("Ställda frågor av användare");
+    $this->views->add('users/viewuserquestions', [
+      'questions' => $all,
+      'title' => "Ställda frågor av användaren",
+    ]);
+*/
+    $this->users->setDI($this->di);
     $this->views->add('users/viewaddquestionlink', [
       'id' => $id,
-      'title' => "Ställa Fråga",
+      'title' => "",
     ]);
-
+/*
     $this->users->setDI($this->di);
     $allresponses = $this->users->findResponsesForUser($id);
-    $this->theme->setTitle("Svara på en fråga");
-    $this->views->add('users/viewuserresponses', [
-      'responses' => $allresponses,
-      'title' => "Svara på fråga",
+    $this->theme->setTitle("Mina svar");
+    foreach ($allresponses as $response) :
+       $questionId = $this->users->findRequestForResponse($response->Id);
+       $this->views->add('users/viewuserresponses', [
+         'response' => $response,
+         'questionid' => $questionId->Questionid,
+         'title' => "",
+       ]);
+    endforeach;
+*/
+    $this->users->setDI($this->di);
+    $this->views->add('users/viewaddresponselink', [
+      'id' => $id,
+      'title' => "",
     ]);
   }
 
@@ -230,10 +253,14 @@ public function saveEditAction($id)
     $this->users->setDI($this->di);
     $allresponses = $this->users->findResponsesForUser($id);
     $this->theme->setTitle("Mina svar");
-    $this->views->add('users/viewuserresponses', [
-      'responses' => $allresponses,
-      'title' => "Svar",
-    ]);
+    foreach ($allresponses as $response) :
+       $questionId = $this->users->findRequestForResponse($response->Id);
+       $this->views->add('users/viewuserresponses', [
+         'response' => $response,
+         'questionid' => $questionId->Questionid,
+         'title' => "",
+       ]);
+    endforeach;
   }
   /**
   * Index action.

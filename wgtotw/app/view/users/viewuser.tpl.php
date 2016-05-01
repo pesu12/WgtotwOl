@@ -11,12 +11,5 @@
       <img src=<?="http://www.gravatar.com/avatar/" . md5( strtolower( trim( $user->Email ) ) ) . "?d=mm&s=80"?> alt="" />
     </td>
   </tr>
-  <tr>
-    <td>
-      <form method=get>
-      <b><a href="<?= $this->url->create('me.php/user/update/').'?id=' . $id?> "title="Uppdatera användare" class="id">Uppdatera användare</a></b><br/>
-      </form>
-    </td>
-  </tr>
 </table>
 </br>

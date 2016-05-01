@@ -2,10 +2,10 @@
 
 namespace Anax\MVC;
 /**
- * Model for Users.
+ * Model for Responsen.
  *
  */
-class CQuestionResponseModel implements \Anax\DI\IInjectionAware
+class CResponsesModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
 
@@ -147,7 +147,17 @@ class CQuestionResponseModel implements \Anax\DI\IInjectionAware
      */
     public function getSource()
     {
-       return "QuestionResponse";
+       return "Response";
+    }
+
+    /**
+   * Find and return specificid for a questionheader.
+   *
+   * @return this
+   */
+    public function lastInsertedId()
+    {
+        return $this->db->lastInsertId();
     }
 
     /**

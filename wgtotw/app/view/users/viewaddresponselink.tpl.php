@@ -4,7 +4,7 @@
   <tr>
     <td>
       <form method=get>
-      <b><a href="<?= $this->url->create('me.php/questionresponse/add/').'?id=' . $id?> "title="Nytt svar" class="id">Nytt svar</a></b><br/>
+      <b><a href="<?= $this->url->create('me.php/responseS/add/').'?id=' . $id?> "title="Lägga in nytt svar på en fråga" class="id">Lägga in nytt svar på en fråga</a></b><br/>
       </form>
     </td>
   </tr>

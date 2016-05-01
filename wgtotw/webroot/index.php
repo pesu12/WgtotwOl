@@ -39,8 +39,8 @@ $di->set('QuestionController', function () use ($di) {
   return $controller;
 });
 
-$di->set('QuestionresponseController', function () use ($di) {
-  $controller = new \Anax\Questionresponse\QuestionresponseController();
+$di->set('ResponsesController', function () use ($di) {
+  $controller = new \Anax\Responses\ResponsesController();
   $controller->setDI($di);
   return $controller;
 });

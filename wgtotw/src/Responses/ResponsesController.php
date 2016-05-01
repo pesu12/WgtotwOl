@@ -1,12 +1,12 @@
 <?php
 
-namespace Anax\Questionresponse;
+namespace Anax\Responses;
 
 /**
- * A controller for users and admin related events.
+ * A controller for responses related events.
  *
  */
-class QuestionresponseController implements \Anax\DI\IInjectionAware
+class ResponsesController implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
 
@@ -17,8 +17,8 @@ class QuestionresponseController implements \Anax\DI\IInjectionAware
      */
     public function initialize()
     {
-        $this->questions = new \Anax\Question\Question();
-        $this->questions->setDI($this->di);
+        $this->responses = new \Anax\Responses\Responses();
+        $this->responses->setDI($this->di);
     }
 
     /**
@@ -30,13 +30,14 @@ class QuestionresponseController implements \Anax\DI\IInjectionAware
      */
     public function addAction()
     {
+       $id = $this->request->getGet('id');
        $this->di->session();
-       $form = new \Anax\HTMLForm\CFormPsWebAddUser();
+       $form = new \Anax\HTMLForm\CFormResponseAdd($id);
        $form->setDI($this->di);
        $form->check();
-       $this->di->theme->setTitle("Users Add Menu");
+       $this->di->theme->setTitle("Svara på fråga");
        $this->di->views->add('default/page', [
-         'title' => "Users Add Menu",
+         'title' => "Svara på fråga",
          'content' => $form->getHTML()
        ]);
     }
@@ -138,14 +139,14 @@ class QuestionresponseController implements \Anax\DI\IInjectionAware
          'responses' => $allResponses,
          'title' => "Svar till frågan",
        ]);
-
+/*
        $this->questions->setDI($this->di);
        $this->theme->setTitle("Lägg till nytt svar");
        $this->views->add('questionresponses/viewaddresponselink', [
          'id' => $id,
          'title' => "Lägg till nytt svar",
        ]);
-
+*/
     }
 
     /**
