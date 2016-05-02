@@ -120,6 +120,16 @@ class UserController implements \Anax\DI\IInjectionAware
       'id' => $id,
       'title' => "",
     ]);
+
+    $this->users->setDI($this->di);
+    $this->views->add('users/viewaddquestioncommentlink', [
+      'title' => "",
+    ]);
+
+    $this->users->setDI($this->di);
+    $this->views->add('users/viewaddresponsecommentlink', [
+      'title' => "",
+    ]);
   }
 
   /**

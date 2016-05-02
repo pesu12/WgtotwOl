@@ -142,6 +142,15 @@ class QuestionController implements \Anax\DI\IInjectionAware
     ]);
 
     $this->questions->setDI($this->di);
+    $comments = $this->questions->findallquestioncomments($id);
+    $this->theme->setTitle("Kommentar till fråga");
+    $this->views->add('questions/viewcomments', [
+      'id' => $id,
+      'comments' => $comments,
+      'title' => "Kommentar till fråga",
+    ]);
+
+    $this->questions->setDI($this->di);
     $allResponses = $this->questions->findAllResponses($id);
     $this->theme->setTitle("Svar till frågan");
     $this->views->add('questions/viewresponses', [
@@ -149,6 +158,21 @@ class QuestionController implements \Anax\DI\IInjectionAware
       'responses' => $allResponses,
       'title' => "Svar till frågan",
     ]);
+
+    $this->questions->setDI($this->di);
+    $this->theme->setTitle("Kommentar till svar");
+
+    $allResponses = $this->questions->findAllResponses($id);
+
+    foreach ($allResponses as $response) :
+      $comments = $this->questions->findallResponsecomments($response->Id);
+      $this->views->add('questions/viewcomments', [
+        'id' => $id,
+        'comments' => $comments,
+        'title' => "Kommentar till svar",
+      ]);
+    endforeach;
+
   }
 
   /**

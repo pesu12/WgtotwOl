@@ -111,9 +111,41 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
    */
     public function findAllResponses($id)
     {
-      $this->db->select("Response.Responsename")
+      $this->db->select("Response.Responsename,Response.Id")
                ->from("Question,Response,QuestionResponse")
                ->where("Question.Id=QuestionResponse.Questionid and Response.Id=QuestionResponse.Responseid and Question.Id = ?");
+
+      $this->db->execute([$id]);
+      $this->db->setFetchModeClass(__CLASS__);
+      return $this->db->fetchAll();
+    }
+
+    /**
+   * Find and return all comments to a specific question.
+   *
+   * @return array
+   */
+    public function findallquestioncomments($id)
+    {
+      $this->db->select("Commentname")
+               ->from("Comments")
+               ->where("QuestionResponseType = 'question' and QuestionResponseId = ?");
+
+      $this->db->execute([$id]);
+      $this->db->setFetchModeClass(__CLASS__);
+      return $this->db->fetchAll();
+    }
+
+    /**
+   * Find and return all comments to a specific question response.
+   *
+   * @return array
+   */
+    public function findallResponsecomments($id)
+    {
+      $this->db->select("Commentname")
+               ->from("Comments")
+               ->where("QuestionResponseType = 'response' and QuestionResponseId = ?");
 
       $this->db->execute([$id]);
       $this->db->setFetchModeClass(__CLASS__);

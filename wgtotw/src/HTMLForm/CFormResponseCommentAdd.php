@@ -4,7 +4,7 @@ namespace Anax\HTMLForm;
  * Anax base class for wrapping sessions.
  *
  */
-class CFormQuestionAdd extends \Anax\HTMLForm\CForm
+class CFormResponseCommentAdd extends \Anax\HTMLForm\CForm
 {
   use \Anax\DI\TInjectionaware,
       \Anax\MVC\TRedirectHelpers;
@@ -12,29 +12,20 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
    * Constructor
    *
    */
-   public function __construct($id)
+   public function __construct()
    {
 
-     $_POST['addid']=$id;
-
      parent::__construct([], [
-       'addheader' => [
+       'addresponse' => [
            'type'        => 'text',
-           'label'       => 'Titel för fråga:',
+           'label'       => 'Svar:',
            'required'    => true,
            'validation'  => ['not_empty'],
        ],
 
-       'addquestion' => [
+       'addcomment' => [
            'type'        => 'text',
-           'label'       => 'Fråga:',
-           'required'    => true,
-           'validation'  => ['not_empty'],
-       ],
-
-       'addtag' => [
-           'type'        => 'text',
-           'label'       => 'Tag:',
+           'label'       => 'Kommentarstext:',
            'required'    => true,
            'validation'  => ['not_empty'],
        ],
@@ -87,32 +78,13 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
    */
   public function callbackSuccess($form)
   {
-    $this->questions = new \Anax\Question\Question();
+    $this->questions = new \Anax\Comment\Comment();
     $this->questions->setDI($this->di);
-    echo($_POST['addid']);
-    echo($_POST['addheader']);
-    echo($_POST['addquestion']);
-    echo($_POST['addtag']);
-    $this->questions->save([
-       'Questionheader' => $_POST['addheader'],
-       'Questionname' => $_POST['addquestion'],
+    $this->questions->create([
+       'Commentname' => $_POST['addcomment'],
+       'QuestionResponseType' => 'response',
+       'QuestionResponseId' => $_POST['addresponse']
      ]);
-
-    $latestquestion=$this->questions->lastInsertedId();
-
-    $this->userquestion = new \Anax\UserQuestion\UserQuestion();
-    $this->userquestion->setDI($this->di);
-    $this->userquestion->save([
-       'Userid' => $_POST['addid'],
-       'Questionid' => $latestquestion,
-     ]);
-
-     $this->questiontag = new \Anax\Questiontag\Questiontag();
-     $this->questiontag->setDI($this->di);
-     $this->questiontag->save([
-        'Questionid' => $latestquestion,
-        'Tagid' => $_POST['addtag'],
-      ]);
 
     // $this->redirectTo('index.php/user');
   }

@@ -51,6 +51,12 @@ $di->set('TagController', function () use ($di) {
   return $controller;
 });
 
+$di->set('CommentController', function () use ($di) {
+  $controller = new \Anax\Comment\CommentController();
+  $controller->setDI($di);
+  return $controller;
+});
+
 $di->setShared('db', function() use ($di) {
   $db = new \Anax\Database\CDatabaseBasic();
   $db->setOptions(require ANAX_APP_PATH . 'config/config_mysql.php');
