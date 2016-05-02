@@ -1,8 +1,8 @@
 <h1><?=$title?></h1>
 
 
-      Frågeheader: <?=$question->Questionheader?>
+    <?=$question->Questionheader?>
     </br> </br>
-      Frågename: <?=$question->Questionname?>
+    <?=$question->Questionname?>
 
-    </br> </br>    
+    </br> </br>

@@ -78,10 +78,11 @@ class CFormResponseCommentAdd extends \Anax\HTMLForm\CForm
    */
   public function callbackSuccess($form)
   {
+    $this->filter = new \Anax\Content\CTextFilter();
     $this->questions = new \Anax\Comment\Comment();
     $this->questions->setDI($this->di);
     $this->questions->create([
-       'Commentname' => $_POST['addcomment'],
+       'Commentname' => $this->filter->markdown($_POST['addcomment']),
        'QuestionResponseType' => 'response',
        'QuestionResponseId' => $_POST['addresponse']
      ]);

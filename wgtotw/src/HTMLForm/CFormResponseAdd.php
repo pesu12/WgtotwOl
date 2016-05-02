@@ -87,6 +87,7 @@ class CFormResponseAdd extends \Anax\HTMLForm\CForm
    */
   public function callbackSuccess($form)
   {
+    $this->filter = new \Anax\Content\CTextFilter();
     $this->responses = new \Anax\Responses\Responses();
     $this->responses->setDI($this->di);
     $this->responses->save([

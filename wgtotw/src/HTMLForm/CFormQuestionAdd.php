@@ -87,15 +87,12 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
    */
   public function callbackSuccess($form)
   {
+    $this->filter = new \Anax\Content\CTextFilter();
     $this->questions = new \Anax\Question\Question();
     $this->questions->setDI($this->di);
-    echo($_POST['addid']);
-    echo($_POST['addheader']);
-    echo($_POST['addquestion']);
-    echo($_POST['addtag']);
     $this->questions->save([
-       'Questionheader' => $_POST['addheader'],
-       'Questionname' => $_POST['addquestion'],
+       'Questionheader' => $this->filter->markdown($_POST['addheader']),
+       'Questionname' => $this->filter->markdown($_POST['addquestion']),
      ]);
 
     $latestquestion=$this->questions->lastInsertedId();
