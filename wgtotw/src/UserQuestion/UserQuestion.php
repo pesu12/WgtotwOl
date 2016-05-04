@@ -3,10 +3,10 @@
 namespace Anax\UserQuestion;
 
 /**
- * Model for Tags.
+ * Model for UserQuestion.
  *
  */
-class UserQuestion extends \Anax\MVC\CUserquestionModel 
+class UserQuestion extends \Anax\MVC\CUserquestionModel
 {
 
 }

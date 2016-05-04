@@ -3,7 +3,7 @@
 namespace Anax\Tag;
 
 /**
-* A controller for users and admin related events.
+* A controller for Tag related events.
 *
 */
 class TagController implements \Anax\DI\IInjectionAware

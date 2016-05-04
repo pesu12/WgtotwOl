@@ -198,6 +198,16 @@ class CUserModel implements \Anax\DI\IInjectionAware
     }
 
     /**
+   * Find and return specificid for a questionheader.
+   *
+   * @return this
+   */
+    public function lastInsertedId()
+    {
+        return $this->db->lastInsertId();
+    }    
+
+    /**
      * Build a select-query.
      *
      * @param string $columns which columns to select.

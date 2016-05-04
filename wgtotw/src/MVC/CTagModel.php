@@ -2,7 +2,7 @@
 
 namespace Anax\MVC;
 /**
- * Model for Users.
+ * Model for Tag.
  *
  */
 class CTagModel implements \Anax\DI\IInjectionAware

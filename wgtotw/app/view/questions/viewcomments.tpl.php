@@ -3,7 +3,7 @@
   <table style="width:100%">
     <?php foreach ($comments as $comment) : ?>
       <tr>
-        <?=$comment->Commentname?></br></br>
+        <?=$comment->Commentname?></br>
       </tr>
     <?php endforeach; ?>
       </table>

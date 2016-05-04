@@ -2,7 +2,7 @@
 
 namespace Anax\MVC;
 /**
-* Model for Users.
+* Model for First page.
 *
 */
 class CFirstpageModel implements \Anax\DI\IInjectionAware
@@ -19,7 +19,7 @@ class CFirstpageModel implements \Anax\DI\IInjectionAware
   public function andWhere($condition)
   {
     $this->db->andWhere($condition);
-    
+
     return $this;
   }
 

@@ -2,7 +2,7 @@
 
 namespace Anax\MVC;
 /**
- * Model for Users.
+ * Model for Userquestion.
  *
  */
 class CUserquestionModel implements \Anax\DI\IInjectionAware

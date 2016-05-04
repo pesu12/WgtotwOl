@@ -1,9 +1,9 @@
 <?php
 
-namespace Anax\Question;
+namespace Anax\Questiontag;
 
 /**
-* A controller for users and admin related events.
+* A controller for questiontag related events.
 *
 */
 class QuestiontagController implements \Anax\DI\IInjectionAware

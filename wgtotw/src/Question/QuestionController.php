@@ -3,7 +3,7 @@
 namespace Anax\Question;
 
 /**
-* A controller for users and admin related events.
+* A controller for question related events.
 *
 */
 class QuestionController implements \Anax\DI\IInjectionAware
@@ -22,7 +22,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
   }
 
   /**
-  * Add new user.
+  * Add new question.
   *
   * @param string $acronym of user to add.
   *
@@ -44,7 +44,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
 
 
   /**
-  * Display user details.
+  * Display question details.
   *
   * @param integer $id of user to display delete for.
   *
@@ -87,7 +87,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
   }
 
   /**
-  * List all users.
+  * List all questions.
   *
   * @param string $id user id.
   *

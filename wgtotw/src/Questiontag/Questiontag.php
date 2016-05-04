@@ -3,10 +3,10 @@
 namespace Anax\Questiontag;
 
 /**
- * Model for Tags.
+ * Model for QuestionTags.
  *
  */
-class Questiontag extends \Anax\MVC\CQuestiontagModel 
+class Questiontag extends \Anax\MVC\CQuestiontagModel
 {
 
 }

@@ -52,6 +52,7 @@ class UserController implements \Anax\DI\IInjectionAware
   public function loginAction()
   {
      $this->di->session();
+     $this->users->theme->addStylesheet('css/anax-grid/style.php');
      $form = new \Anax\HTMLForm\CFormAdminLoginUser();
      $form->setDI($this->di);
      $form->check();
@@ -60,6 +61,11 @@ class UserController implements \Anax\DI\IInjectionAware
        'title' => "Logga in",
        'content' => $form->getHTML()
      ]);
+
+     $this->di->views->add('users/viewaddnewuserlink', [
+       'title' => ""
+     ]);
+
   }
 
 
@@ -130,6 +136,10 @@ class UserController implements \Anax\DI\IInjectionAware
     $this->views->add('users/viewaddresponsecommentlink', [
       'title' => "",
     ]);
+
+    $this->di->views->add('users/viewlogoutlink', [
+      'title' => ""
+    ]);
   }
 
   /**
@@ -171,6 +181,10 @@ class UserController implements \Anax\DI\IInjectionAware
     $this->di->views->add('default/page', [
         'title' => "Uppdatera användare",
         'content' => $form->getHTML()
+    ]);
+
+    $this->di->views->add('users/notupdatepassword', [
+      'title' => ""
     ]);
   }
 

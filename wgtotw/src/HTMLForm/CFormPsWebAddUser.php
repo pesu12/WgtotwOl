@@ -36,6 +36,13 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
              'validation'  => ['not_empty'],
          ],
 
+         'addpassword' => [
+             'type'        => 'text',
+             'label'       => 'Lösenord:',
+             'required'    => true,
+             'validation'  => ['not_empty'],
+         ],
+
          'submit' => [
              'type'      => 'submit',
                'callback'  => [$this, 'callbackSubmit'],
@@ -93,7 +100,8 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
          'Email' => $_POST['addemail'],
          'Userpassword' => password_hash($_POST['addacronym'], PASSWORD_DEFAULT),
        ]);
-       $this->redirectTo('index.php/user');
+    $this->users->lastInsertedId();
+       $this->redirectTo('index.php/user/displayuser/'.$this->users->lastInsertedId());     
     }
 
     /**

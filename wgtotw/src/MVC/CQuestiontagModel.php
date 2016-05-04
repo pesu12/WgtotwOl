@@ -2,7 +2,7 @@
 
 namespace Anax\MVC;
 /**
- * Model for Users.
+ * Model for QuestionTag.
  *
  */
 class CQuestiontagModel implements \Anax\DI\IInjectionAware
