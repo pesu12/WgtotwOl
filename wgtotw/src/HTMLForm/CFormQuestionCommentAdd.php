@@ -14,16 +14,10 @@ class CFormQuestionCommentAdd extends \Anax\HTMLForm\CForm
    */
    public function __construct($id)
    {
-
-     $_POST['userid']=$id;
+     $_POST['questionid']=$id;
+     $_POST['userid']=1;
 
      parent::__construct([], [
-       'addquestion' => [
-           'type'        => 'text',
-           'label'       => 'Fråga:',
-           'required'    => true,
-           'validation'  => ['not_empty'],
-       ],
 
        'addcomment' => [
            'type'        => 'text',
@@ -86,7 +80,7 @@ class CFormQuestionCommentAdd extends \Anax\HTMLForm\CForm
     $this->questions->create([
        'Commentname' => $this->filter->markdown($_POST['addcomment']),
        'QuestionResponseType' => 'question',
-       'QuestionResponseId' => $_POST['addquestion'],
+       'QuestionResponseId' => $_POST['questionid'],
        'Userid' => $_POST['userid'],
      ]);
 

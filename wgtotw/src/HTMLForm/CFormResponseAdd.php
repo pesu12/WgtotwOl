@@ -15,7 +15,8 @@ class CFormResponseAdd extends \Anax\HTMLForm\CForm
    public function __construct($id)
    {
 
-     $_POST['userid']=$id;
+     $_POST['questionid']=$id;
+     $_POST['userid']=1;
 
      parent::__construct([], [
        'addheader' => [
@@ -28,13 +29,6 @@ class CFormResponseAdd extends \Anax\HTMLForm\CForm
        'addresponse' => [
            'type'        => 'text',
            'label'       => 'Svar:',
-           'required'    => true,
-           'validation'  => ['not_empty'],
-       ],
-
-       'addquestion' => [
-           'type'        => 'text',
-           'label'       => 'Fråga:',
            'required'    => true,
            'validation'  => ['not_empty'],
        ],
@@ -107,7 +101,7 @@ class CFormResponseAdd extends \Anax\HTMLForm\CForm
      $this->questionresponse = new \Anax\MVC\CQuestionresponseModel();
      $this->questionresponse->setDI($this->di);
      $this->questionresponse->save([
-        'Questionid' => $_POST['addquestion'],
+        'Questionid' => $_POST['questionid'],
         'Responseid' => $latestresponse,
       ]);
 

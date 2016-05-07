@@ -19,6 +19,14 @@ class TagController implements \Anax\DI\IInjectionAware
   {
     $this->tags = new \Anax\Tag\Tag();
     $this->tags->setDI($this->di);
+
+    //User is needed to display name for specific question or response
+    $this->users = new \Anax\User\User();
+    $this->users->setDI($this->di);
+
+    //UserQuestion is needed to display name for specific question
+    $this->userquestion = new \Anax\UserQuestion\UserQuestion();
+    $this->userquestion->setDI($this->di);       
   }
 
   /**
@@ -121,6 +129,7 @@ class TagController implements \Anax\DI\IInjectionAware
   */
   public function idAction($id = null)
   {
+
     $this->tags->theme->addStylesheet('css/anax-grid/style.php');
     $tag = $this->tags->find($id);
     $this->theme->setTitle("Tag");
@@ -130,14 +139,22 @@ class TagController implements \Anax\DI\IInjectionAware
       'title' => "Tag",
     ]);
 
-    $this->tags->setDI($this->di);
-    $allQuestions = $this->tags->findAllQuestions($id);
-    $this->theme->setTitle("Frågor till tag");
-    $this->views->add('tags/viewquestions', [
-      'id' => $id,
-      'questions' => $allQuestions,
-      'title' => "Frågor till tag",
+    $latestquestions = $this->tags->findAllQuestions($id);
+
+    $this->di->views->add('questions/displayheader', [
+      'title' => "Frågor till tag"
     ]);
+
+    foreach ($latestquestions as $question) :
+      $Userid = $this->userquestion->findUserToQuestion($question->Id);
+      $user = $this->users->find($Userid->Userid);
+      $this->views->add('questions/viewwithouttitle', [
+        'question' => $question,
+        'user' => $user
+      ]);
+    endforeach;
+
+
   }
 
   /**

@@ -101,7 +101,7 @@ class CTagModel implements \Anax\DI\IInjectionAware
    */
     public function findAllQuestions($id)
     {
-      $this->db->select("Question.Questionheader,Tag.Tagname")
+      $this->db->select("Question.Id,Question.Questionheader,Tag.Tagname")
                ->from("Question,Tag,QuestionTag")
                ->where("Tag.Id=QuestionTag.Tagid and Question.Id=QuestionTag.Questionid and Tag.Id = ?");
 

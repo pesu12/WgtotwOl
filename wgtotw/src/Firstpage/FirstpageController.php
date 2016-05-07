@@ -31,6 +31,9 @@ class FirstpageController implements \Anax\DI\IInjectionAware
 
     $this->questiontags = new \Anax\Questiontag\Questiontag();
     $this->questiontags->setDI($this->di);
+
+    $this->userquestion = new \Anax\UserQuestion\UserQuestion();
+    $this->userquestion->setDI($this->di);
   }
 
   /**
@@ -48,11 +51,21 @@ class FirstpageController implements \Anax\DI\IInjectionAware
     ]);
 
     $latestquestions = $this->questions->findLatestQuestions();
-    $this->theme->setTitle("Senaste frågan");
-    $this->views->add('questions/viewlatestquestion', [
-      'questions' => $latestquestions,
-      'title' => "Senaste frågan",
+
+    $this->di->views->add('questions/displayheader', [
+      'title' => "Senaste frågan"
     ]);
+
+    foreach ($latestquestions as $question) :
+      $Userid = $this->userquestion->findUserToQuestion($question->Id);
+      $user = $this->users->find($Userid->Userid);
+      $this->views->add('questions/viewwithouttitle', [
+        'question' => $question,
+        'user' => $user
+      ]);
+    endforeach;
+
+
 
     $this->di->views->add('tags/displayheader', [
       'title' => "Mest populära tag"

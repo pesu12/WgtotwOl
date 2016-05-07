@@ -130,7 +130,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
     $this->userresponse = new \Anax\MVC\CUserResponseModel();
     $this->userresponse->setDI($this->di);
 
-    //UserQuestion is needed to display name for specific question or response
+    //User is needed to display name for specific question or response
     $this->users = new \Anax\User\User();
     $this->users->setDI($this->di);
 
@@ -159,9 +159,6 @@ class QuestionController implements \Anax\DI\IInjectionAware
     ]);
 
     //Display comment to question
-    $this->di->views->add('questions/displayheader', [
-      'title' => "Kommentar till fråga"
-    ]);
     $this->questions->setDI($this->di);
     $comments = $this->questions->findallquestioncomments($id);
     foreach ($comments as $comment) :
@@ -173,6 +170,11 @@ class QuestionController implements \Anax\DI\IInjectionAware
          'username' => $user->Username,
        ]);
     endforeach;
+
+    //Add comment to question
+    $this->di->views->add('questions/viewaddquestioncommentlink', [
+            'id' => $id,
+    ]);
 
     //Display response to question
     $this->di->views->add('questions/displayheader', [
@@ -189,16 +191,6 @@ class QuestionController implements \Anax\DI\IInjectionAware
         'userid' => $user->Id,
         'username' => $user->Username,
       ]);
-    endforeach;
-
-
-    //Display comment to response
-    $this->di->views->add('questions/displayheader', [
-      'title' => "Kommentar till svar"
-    ]);
-    $this->questions->setDI($this->di);
-    $allResponses = $this->questions->findAllResponses($id);
-    foreach ($allResponses as $response) :
       $comments = $this->questions->findallResponsecomments($response->Id);
       foreach ($comments as $comment) :
          $user=$this->users->find($comment->UserId);
@@ -208,9 +200,17 @@ class QuestionController implements \Anax\DI\IInjectionAware
            'userid' => $user->Id,
            'username' => $user->Username,
          ]);
-      endforeach;
+        endforeach;
+        //Add comment to response
+        $this->di->views->add('questions/viewaddresponsecommentlink', [
+                'responseid' => $response->Id,
+        ]);
     endforeach;
 
+    //Add response to question
+    $this->di->views->add('questions/viewaddresponselink', [
+            'id' => $id,
+    ]);
   }
 
   /**
@@ -239,5 +239,8 @@ class QuestionController implements \Anax\DI\IInjectionAware
         'user' => $user
       ]);
     endforeach;
+
+    $this->di->views->add('questions/viewaddquestionlink', [
+    ]);
   }
 }
