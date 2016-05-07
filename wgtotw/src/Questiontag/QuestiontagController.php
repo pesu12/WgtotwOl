@@ -17,7 +17,7 @@ class QuestiontagController implements \Anax\DI\IInjectionAware
   */
   public function initialize()
   {
-    $this->questiontags = new \Anax\Question\Questiontags();
+    $this->questiontags = new \Anax\Questiontag\Questiontags();
     $this->questiontags->setDI($this->di);
   }
 

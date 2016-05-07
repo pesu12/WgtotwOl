@@ -127,19 +127,20 @@ class CQuestiontagModel implements \Anax\DI\IInjectionAware
     }
 
     /**
-   * Find and return all latest questions for first page.
+   * Find and return most pupular tag, for firstpage.
    *
    * @return array
    */
-    public function findLatestQuestions()
+    public function findMostPopularTag()
     {
-      $this->db->select("Questionheader")
-               ->from("Question order by Id desc limit 1");
+      $this->db->select("*")
+               ->from("QuestionTag group by Tagid order by count(*) desc limit 2");
 
       $this->db->execute();
       $this->db->setFetchModeClass(__CLASS__);
       return $this->db->fetchAll();
     }
+
     /**
      * Execute the query built.
      *

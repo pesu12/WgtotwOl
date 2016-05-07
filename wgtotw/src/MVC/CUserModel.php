@@ -149,7 +149,7 @@ class CUserModel implements \Anax\DI\IInjectionAware
     */
      public function findMostActiveUsers()
      {
-       $this->db->select("Username")
+       $this->db->select("Id,Username")
                 ->from("User group by Id order by count(*) desc limit 2");
 
        $this->db->execute();
@@ -205,7 +205,7 @@ class CUserModel implements \Anax\DI\IInjectionAware
     public function lastInsertedId()
     {
         return $this->db->lastInsertId();
-    }    
+    }
 
     /**
      * Build a select-query.

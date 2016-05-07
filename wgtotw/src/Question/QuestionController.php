@@ -206,7 +206,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
            'id' => $id,
            'comment' => $comment,
            'userid' => $user->Id,
-           'username' => $user->Username,    
+           'username' => $user->Username,
          ]);
       endforeach;
     endforeach;

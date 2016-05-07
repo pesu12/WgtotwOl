@@ -175,7 +175,7 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
    */
     public function findLatestQuestions()
     {
-      $this->db->select("Questionheader")
+      $this->db->select("Id,Questionheader")
                ->from("Question order by Id desc limit 1");
 
       $this->db->execute();

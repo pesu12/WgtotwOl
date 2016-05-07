@@ -112,21 +112,6 @@ class CTagModel implements \Anax\DI\IInjectionAware
 
 
     /**
-   * Find and return most pupular tag, for firstpage.
-   *
-   * @return array
-   */
-    public function findMostPopularTag()
-    {
-      $this->db->select("Tagname")
-               ->from("Tag group by Tagname order by count(*) desc limit 2");
-
-      $this->db->execute();
-      $this->db->setFetchModeClass(__CLASS__);
-      return $this->db->fetchAll();
-    }
-
-    /**
      * Execute the query built.
      *
      * @param string $query custom query.

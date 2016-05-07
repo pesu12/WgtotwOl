@@ -28,6 +28,9 @@ class FirstpageController implements \Anax\DI\IInjectionAware
 
     $this->tags = new \Anax\Tag\Tag();
     $this->tags->setDI($this->di);
+
+    $this->questiontags = new \Anax\Questiontag\Questiontag();
+    $this->questiontags->setDI($this->di);
   }
 
   /**
@@ -51,12 +54,17 @@ class FirstpageController implements \Anax\DI\IInjectionAware
       'title' => "Senaste frågan",
     ]);
 
-    $all = $this->tags->findMostPopularTag();
-    $this->theme->setTitle("Mest populära tag");
-    $this->views->add('tags/mostpopulartag', [
-      'tags' => $all,
-      'title' => "Mest populära tag",
+    $this->di->views->add('tags/displayheader', [
+      'title' => "Mest populära tag"
     ]);
 
+    $questiontags = $this->questiontags->findMostPopularTag();
+    foreach ($questiontags as $questiontag) :
+       $tag = $this->tags->find($questiontag->Tagid);
+       $this->views->add('tags/mostpopulartag', [
+         'tagid' => $questiontag->Tagid,
+         'tagname' => $tag->Tagname,
+       ]);
+    endforeach;
   }
 }

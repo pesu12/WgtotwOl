@@ -5,7 +5,7 @@
     <tr>
       <td>
         <form method=get>
-          <b><?=$user->Username?></a></b><br/>
+          <b><a href="<?= $this->url->create('me.php/User')."/id/". $user->Id?> "title="Namn" class="id"><?=$user->Username?></a></b><br/>
         </br>
         </form
       </td>

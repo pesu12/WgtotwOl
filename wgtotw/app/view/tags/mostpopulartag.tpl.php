@@ -1,9 +1,6 @@
-<h1><?=$title?></h1>
-
   <table style="width:100%">
-    <?php foreach ($tags as $tag) : ?>
+
       <tr>
-        <?=$tag->Tagname?></br></br>
+        <a href="<?= $this->url->create('me.php/Tag')."/id/". $tagid?> "title="Namn" class="id"><?=$tagname?></a></br></br>
       </tr>
-    <?php endforeach; ?>
       </table>
