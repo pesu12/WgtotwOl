@@ -91,8 +91,8 @@ class CFormResponseAdd extends \Anax\HTMLForm\CForm
     $this->responses = new \Anax\Responses\Responses();
     $this->responses->setDI($this->di);
     $this->responses->save([
-       'Responseheader' => $_POST['addheader'],
-       'Responsename' => $_POST['addresponse'],
+       'Responseheader' => $this->filter->markdown($_POST['addheader']),
+       'Responsename' => $this->filter->markdown($_POST['addresponse']),
      ]);
 
     $latestresponse=$this->responses->lastInsertedId();

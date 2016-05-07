@@ -12,8 +12,10 @@ class CFormResponseCommentAdd extends \Anax\HTMLForm\CForm
    * Constructor
    *
    */
-   public function __construct()
+   public function __construct($id)
    {
+
+     $_POST['userid']=$id;
 
      parent::__construct([], [
        'addresponse' => [
@@ -84,7 +86,8 @@ class CFormResponseCommentAdd extends \Anax\HTMLForm\CForm
     $this->questions->create([
        'Commentname' => $this->filter->markdown($_POST['addcomment']),
        'QuestionResponseType' => 'response',
-       'QuestionResponseId' => $_POST['addresponse']
+       'QuestionResponseId' => $_POST['addresponse'],
+       'Userid' => $_POST['userid'],
      ]);
 
     // $this->redirectTo('index.php/user');

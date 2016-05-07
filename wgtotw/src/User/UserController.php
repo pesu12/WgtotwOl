@@ -94,7 +94,7 @@ class UserController implements \Anax\DI\IInjectionAware
         'id' => $id,
         'title' => "",
       ]);
-/*
+
     $this->users->setDI($this->di);
     $all = $this->users->findQuestionsForUser($id);
     $this->theme->setTitle("Ställda frågor av användare");
@@ -102,13 +102,12 @@ class UserController implements \Anax\DI\IInjectionAware
       'questions' => $all,
       'title' => "Ställda frågor av användaren",
     ]);
-*/
     $this->users->setDI($this->di);
     $this->views->add('users/viewaddquestionlink', [
       'id' => $id,
       'title' => "",
     ]);
-/*
+
     $this->users->setDI($this->di);
     $allresponses = $this->users->findResponsesForUser($id);
     $this->theme->setTitle("Mina svar");
@@ -120,7 +119,7 @@ class UserController implements \Anax\DI\IInjectionAware
          'title' => "",
        ]);
     endforeach;
-*/
+
     $this->users->setDI($this->di);
     $this->views->add('users/viewaddresponselink', [
       'id' => $id,
@@ -129,11 +128,13 @@ class UserController implements \Anax\DI\IInjectionAware
 
     $this->users->setDI($this->di);
     $this->views->add('users/viewaddquestioncommentlink', [
+      'id' => $id,
       'title' => "",
     ]);
 
     $this->users->setDI($this->di);
     $this->views->add('users/viewaddresponsecommentlink', [
+      'id' => $id,
       'title' => "",
     ]);
 
@@ -276,7 +277,11 @@ public function saveEditAction($id)
 
     $this->users->setDI($this->di);
     $allresponses = $this->users->findResponsesForUser($id);
-    $this->theme->setTitle("Mina svar");
+
+    $this->di->views->add('users/viewtitle', [
+      'title' => "Mina svar"
+    ]);
+
     foreach ($allresponses as $response) :
        $questionId = $this->users->findRequestForResponse($response->Id);
        $this->views->add('users/viewuserresponses', [

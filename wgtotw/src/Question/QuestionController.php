@@ -122,6 +122,19 @@ class QuestionController implements \Anax\DI\IInjectionAware
   */
   public function idAction($id = null)
   {
+    //UserQuestion is needed to display name for specific question
+    $this->userquestion = new \Anax\UserQuestion\UserQuestion();
+    $this->userquestion->setDI($this->di);
+
+    //UserResponse is needed to display name for specific response
+    $this->userresponse = new \Anax\MVC\CUserResponseModel();
+    $this->userresponse->setDI($this->di);
+
+    //UserQuestion is needed to display name for specific question or response
+    $this->users = new \Anax\User\User();
+    $this->users->setDI($this->di);
+
+    //Display tag
     $this->questions->theme->addStylesheet('css/anax-grid/style.php');
     $this->questions->setDI($this->di);
     $allTags = $this->questions->findAllTags($id);
@@ -132,45 +145,70 @@ class QuestionController implements \Anax\DI\IInjectionAware
       'title' => "Taggar till frågan",
     ]);
 
-    $this->questions->setDI($this->di);
+    //Display question
     $question = $this->questions->find($id);
+    $Userid = $this->userquestion->findUserToQuestion($question->Id);
+    $user = $this->users->find($Userid->Userid);
+
     $this->theme->setTitle("Fråga");
     $this->views->add('questions/view', [
       'id' => $id,
       'question' => $question,
       'title' => "Fråga",
+      'user' => $user,
     ]);
 
+    //Display comment to question
+    $this->di->views->add('questions/displayheader', [
+      'title' => "Kommentar till fråga"
+    ]);
     $this->questions->setDI($this->di);
     $comments = $this->questions->findallquestioncomments($id);
-    $this->theme->setTitle("Kommentar till fråga");
-    $this->views->add('questions/viewcomments', [
-      'id' => $id,
-      'comments' => $comments,
-      'title' => "Kommentar till fråga",
-    ]);
+    foreach ($comments as $comment) :
+       $user=$this->users->find($comment->UserId);
+       $this->views->add('questions/viewcomments', [
+         'id' => $id,
+         'comment' => $comment,
+         'userid' => $user->Id,
+         'username' => $user->Username,
+       ]);
+    endforeach;
 
+    //Display response to question
+    $this->di->views->add('questions/displayheader', [
+      'title' => "Svar till frågan"
+    ]);
+    $this->questions->setDI($this->di);
+    $responses = $this->questions->findAllResponses($id);
+    foreach ($responses as $response) :
+      $Userid = $this->userresponse->findUserToResponse($response->Id);
+      $user = $this->users->find($Userid->Userid);
+      $this->views->add('questions/viewresponses', [
+        'id' => $id,
+        'response' => $response,
+        'userid' => $user->Id,
+        'username' => $user->Username,
+      ]);
+    endforeach;
+
+
+    //Display comment to response
+    $this->di->views->add('questions/displayheader', [
+      'title' => "Kommentar till svar"
+    ]);
     $this->questions->setDI($this->di);
     $allResponses = $this->questions->findAllResponses($id);
-    $this->theme->setTitle("Svar till frågan");
-    $this->views->add('questions/viewresponses', [
-      'id' => $id,
-      'responses' => $allResponses,
-      'title' => "Svar till frågan",
-    ]);
-
-    $this->questions->setDI($this->di);
-    $this->theme->setTitle("Kommentar till svar");
-
-    $allResponses = $this->questions->findAllResponses($id);
-
     foreach ($allResponses as $response) :
       $comments = $this->questions->findallResponsecomments($response->Id);
-      $this->views->add('questions/viewcomments', [
-        'id' => $id,
-        'comments' => $comments,
-        'title' => "Kommentar till svar",
-      ]);
+      foreach ($comments as $comment) :
+         $user=$this->users->find($comment->UserId);
+         $this->views->add('questions/viewcomments', [
+           'id' => $id,
+           'comment' => $comment,
+           'userid' => $user->Id,
+           'username' => $user->Username,    
+         ]);
+      endforeach;
     endforeach;
 
   }
@@ -182,12 +220,24 @@ class QuestionController implements \Anax\DI\IInjectionAware
   public function indexAction()
   {
 
-    $all = $this->questions->findAll();
-
-    $this->theme->setTitle("Visa alla frågor");
-    $this->views->add('questions/list-all', [
-      'questions' => $all,
-      'title' => "Visa alla frågor",
+    $this->di->views->add('questions/displayheader', [
+      'title' => "Visa alla frågor"
     ]);
+
+    $allquestions = $this->questions->findAll();
+
+    $this->userquestion = new \Anax\UserQuestion\UserQuestion();
+    $this->userquestion->setDI($this->di);
+    $this->users = new \Anax\User\User();
+    $this->users->setDI($this->di);
+
+    foreach ($allquestions as $question) :
+      $Userid = $this->userquestion->findUserToQuestion($question->Id);
+      $user = $this->users->find($Userid->Userid);
+      $this->views->add('questions/viewwithouttitle', [
+        'question' => $question,
+        'user' => $user
+      ]);
+    endforeach;
   }
 }

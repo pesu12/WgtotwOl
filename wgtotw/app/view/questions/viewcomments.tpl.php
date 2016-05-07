@@ -1,9 +1,6 @@
-<h1><?=$title?></h1>
-
   <table style="width:100%">
-    <?php foreach ($comments as $comment) : ?>
       <tr>
+        <a href="<?= $this->url->create('me.php/User')."/id/". $userid?> "title="Namn" class="id"><?="Kommentar från " . $username ?></a>
         <?=$comment->Commentname?></br>
       </tr>
-    <?php endforeach; ?>
       </table>

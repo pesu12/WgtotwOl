@@ -111,6 +111,21 @@ class CUserResponseModel implements \Anax\DI\IInjectionAware
     }
 
     /**
+    * Find user to a specific response.
+    *
+    * @return this
+    */
+    public function findUserToResponse($id)
+    {
+      $this->db->select("Userid")
+      ->from("UserResponse")
+      ->where("Responseid = ?");
+
+      $this->db->execute([$id]);
+      return $this->db->fetchInto($this);
+    }
+
+    /**
      * Execute the query built.
      *
      * @param string $query custom query.

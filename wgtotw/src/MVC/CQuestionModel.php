@@ -127,7 +127,7 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
    */
     public function findallquestioncomments($id)
     {
-      $this->db->select("Commentname")
+      $this->db->select("*")
                ->from("Comments")
                ->where("QuestionResponseType = 'question' and QuestionResponseId = ?");
 
@@ -143,7 +143,7 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
    */
     public function findallResponsecomments($id)
     {
-      $this->db->select("Commentname")
+      $this->db->select("*")
                ->from("Comments")
                ->where("QuestionResponseType = 'response' and QuestionResponseId = ?");
 

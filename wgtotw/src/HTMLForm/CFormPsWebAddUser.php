@@ -98,10 +98,10 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
          'Username' => $_POST['addname'],
          'Acronym' => $_POST['addacronym'],
          'Email' => $_POST['addemail'],
-         'Userpassword' => password_hash($_POST['addacronym'], PASSWORD_DEFAULT),
+         'Userpassword' => password_hash($_POST['addpassword'], PASSWORD_DEFAULT),
        ]);
     $this->users->lastInsertedId();
-       $this->redirectTo('index.php/user/displayuser/'.$this->users->lastInsertedId());     
+       $this->redirectTo('index.php/user/displayuser/'.$this->users->lastInsertedId());
     }
 
     /**

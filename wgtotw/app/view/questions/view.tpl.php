@@ -1,8 +1,5 @@
 <h1><?=$title?></h1>
 
-
-    <?=$question->Questionheader?>
-    </br> </br>
-    <?=$question->Questionname?>
-
+    <a href="<?= $this->url->create('me.php/User')."/id/". $user->Id?> "title="Namn" class="id"><?="Ställd av " . $user->Username?></a>
+    <?=$question->Questionname . " -"?>
     </br> </br>

@@ -83,10 +83,8 @@ class CFormAdminLoginUser extends \Anax\HTMLForm\CForm
     $all = $this->users->findAll();
     foreach ($all as $user) :
       if(($user->Username==$_POST['addname'])&&( password_verify ($_POST['addpassword'] , $user->Userpassword ))) {
-        echo 'Password is valid!' ;
           $this->redirectTo('index.php/user/displayuser/'.$user->Id);
       } else {
-        echo 'Invalid password.' ;
       }
     endforeach;
   }

@@ -109,7 +109,7 @@ class CommentController implements \Anax\DI\IInjectionAware
   {
     $this->di->session();
     if($_GET['type'] === "question") {
-      $form = new \Anax\HTMLForm\CFormQuestionCommentAdd();
+      $form = new \Anax\HTMLForm\CFormQuestionCommentAdd($_GET['id']);
       $form->setDI($this->di);
       $form->check();
       $this->di->theme->setTitle("Lägg till kommentar till en fråga");
@@ -120,7 +120,7 @@ class CommentController implements \Anax\DI\IInjectionAware
     }
 
     if($_GET['type'] === "response") {
-      $form = new \Anax\HTMLForm\CFormResponseCommentAdd();
+      $form = new \Anax\HTMLForm\CFormResponseCommentAdd($_GET['id']);
       $form->setDI($this->di);
       $form->check();
       $this->di->theme->setTitle("Lägg till kommentar till ett svar");

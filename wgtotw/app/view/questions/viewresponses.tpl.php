@@ -1,9 +1,6 @@
-<h1><?=$title?></h1>
 
-  <table style="width:100%">
-    <?php foreach ($responses as $response) : ?>
-      <tr>
-        <?=$response->Responsename?></br></br>
-      </tr>
-    <?php endforeach; ?>
-      </table>
+
+
+<a href="<?= $this->url->create('me.php/User')."/id/". $userid?> "title="Namn" class="id"><?="Besvarad av " . $username?></a>
+
+<?=$response->Responsename?></br></br>
