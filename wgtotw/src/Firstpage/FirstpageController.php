@@ -52,7 +52,7 @@ class FirstpageController implements \Anax\DI\IInjectionAware
 
     $latestquestions = $this->questions->findLatestQuestions();
 
-    $this->di->views->add('questions/displayheader', [
+    $this->di->views->add('questions/viewtitle', [
       'title' => "Senaste frågan"
     ]);
 

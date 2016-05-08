@@ -110,6 +110,18 @@ class CTagModel implements \Anax\DI\IInjectionAware
       return $this->db->fetchAll();
     }
 
+    /**
+   * Find and return id for a tagname.
+   *
+   * @return this
+   */
+    public function findIdForTag($tagname)
+    {
+        $this->db->select('Id from Tag where Tagname like ?');
+        $this->db->execute([$tagname]);
+        return $this->db->fetchInto($this);
+    }
+
 
     /**
      * Execute the query built.

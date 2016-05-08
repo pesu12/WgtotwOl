@@ -41,12 +41,6 @@ return [
             'title' => 'Om WGTOTW',
         ],
 
-        'Login' => [
-            'text'  =>'Logga in/ut',
-            'url'   => $this->di->get('url')->create('User/login'),
-            'title' => 'Logga in/ut'
-         ],
-
     ],
 
     /**

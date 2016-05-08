@@ -61,11 +61,6 @@ class UserController implements \Anax\DI\IInjectionAware
        'title' => "Logga in",
        'content' => $form->getHTML()
      ]);
-
-     $this->di->views->add('users/viewaddnewuserlink', [
-       'title' => ""
-     ]);
-
   }
 
 

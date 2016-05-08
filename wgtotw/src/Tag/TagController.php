@@ -26,7 +26,7 @@ class TagController implements \Anax\DI\IInjectionAware
 
     //UserQuestion is needed to display name for specific question
     $this->userquestion = new \Anax\UserQuestion\UserQuestion();
-    $this->userquestion->setDI($this->di);       
+    $this->userquestion->setDI($this->di);
   }
 
   /**
@@ -51,76 +51,6 @@ class TagController implements \Anax\DI\IInjectionAware
 
 
   /**
-  * Display user details.
-  *
-  * @param integer $id of user to display delete for.
-  *
-  * @return void
-  */
-
-  public function displayuserAction($id = null)
-  {
-    $this->di->session();
-    $form = new \Anax\HTMLForm\CFormPsWebDisplayUser();
-    $form->setDI($this->di);
-    $form->check();
-
-    $this->di->theme->setTitle("Users Display details Menu");
-
-    $this->di->views->add('default/page', [
-      'title' => "Users Display Details Menu",
-      'content' => $form->getHTML()
-    ]);
-  }
-
-  /**
-  * Get ussr to update(soft delete).
-  *
-  * @return void
-  */
-  public function updateAction()
-  {
-    $this->di->session();
-    $form = new \Anax\HTMLForm\CFormPsWebUpdateUser();
-    $form->setDI($this->di);
-    $form->check();
-
-    $this->di->theme->setTitle("Users Delete Menu");
-
-    $this->di->views->add('default/page', [
-      'title' => "Users Soft Delete (update) Menu",
-      'content' => $form->getHTML()
-    ]);
-  }
-
-  /**
-  * List all users.
-  *
-  * @param string $id user id.
-  *
-  * @return void
-  */
-  public function listAction($id=null)
-  {
-    if($id==null) {
-      $all = $this->users->findAll();
-      $this->theme->setTitle("List Activated users");
-      $this->views->add('users/list-all', [
-        'users' => $all,
-        'title' => "Users List Menu",
-      ]);
-    }
-    else{
-      $user = $this->users->find($id);
-      $this->theme->setTitle("List Details for a user");
-      $this->views->add('users/view', [
-        'user' => $user,
-        'title' => "Users List Menu",
-      ]);
-    }
-  }
-
-  /**
   * List tag with id.
   *
   * @param int $id of tag to display
@@ -141,7 +71,7 @@ class TagController implements \Anax\DI\IInjectionAware
 
     $latestquestions = $this->tags->findAllQuestions($id);
 
-    $this->di->views->add('questions/displayheader', [
+    $this->di->views->add('questions/viewtitle', [
       'title' => "Frågor till tag"
     ]);
 

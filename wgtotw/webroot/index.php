@@ -127,16 +127,5 @@ $app->router->add('About', function() use ($app) {
 
 });
 
-//For the User Login
-$app->router->add('Login', function() use ($app) {
-  $app->theme->addStylesheet('css/anax-grid/style.php');
-  $app->dispatcher->forward([
-    'controller'    => 'User',
-    'action'         => 'login',
-    'params'        => [],
-  ]);
-
-});
-
 $app->router->handle();
 $app->theme->render();
