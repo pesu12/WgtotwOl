@@ -67,6 +67,8 @@ return $this->db->execute([$id]);
 /**
 * Find and return specific.
 *
+* @param integer $id.
+*
 * @return this
 */
 public function find($id)
@@ -97,6 +99,8 @@ public function findAll()
 /**
 * Find user to a specific question.
 *
+* @param integer $id.
+*
 * @return this
 */
 public function findUserToQuestion($id)
@@ -111,6 +115,8 @@ public function findUserToQuestion($id)
 
 /**
 * Find and return all response to a specific question.
+*
+* @param integer $id.
 *
 * @return array
 */
@@ -127,6 +133,8 @@ public function findAllResponses($id)
 
 /**
 * Find and return all tags to a specific question.
+*
+* @param integer $id.
 *
 * @return array
 */

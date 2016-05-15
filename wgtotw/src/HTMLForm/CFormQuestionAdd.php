@@ -91,7 +91,7 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
     $this->questions = new \Anax\Question\Question();
     $this->questions->setDI($this->di);
     $this->questions->save([
-      'Questionheader' => $this->filter->markdown($_POST['addheader']),
+      'Questionheader' => $_POST['addheader'],
       'Questionname' => $this->filter->markdown($_POST['addquestion']),
     ]);
 

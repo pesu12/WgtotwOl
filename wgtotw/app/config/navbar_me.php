@@ -35,12 +35,17 @@ return [
             'title' => 'Användare'
          ],
 
+         'Loginlogout'  => [
+             'text'  => 'Logga in/Logga ut',
+             'url'   => $this->di->get('url')->create('User/loginlogout'),
+             'title' => 'Logga in/Logga ut',
+         ],
+
         'About'  => [
             'text'  => 'Om WGTOTW',
             'url'   => $this->di->get('url')->create('About'),
             'title' => 'Om WGTOTW',
         ],
-
     ],
 
     /**

@@ -1,4 +1,4 @@
-<h1><?=$title?></h1>
+<i><h2><?=$title?></h2></i>
 
 <table style="width:100%">
   <tr>
@@ -9,3 +9,5 @@
     </td>
   </tr>
 </table>
+
+</br>

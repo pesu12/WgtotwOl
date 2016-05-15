@@ -109,6 +109,17 @@ $app->router->add('Question', function() use ($app) {
   ]);
 });
 
+//For the login and logout page
+$app->router->add('User/Loginlogout', function() use ($app) {
+
+  $app->theme->addStylesheet('css/anax-grid/style.php');
+  $app->dispatcher->forward([
+    'controller'    => 'User',
+    'action'         => 'loginlogout',
+    'params'        => [],
+  ]);
+});
+
 //For the About page
 $app->router->add('About', function() use ($app) {
 

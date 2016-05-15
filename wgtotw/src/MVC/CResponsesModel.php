@@ -2,7 +2,7 @@
 
 namespace Anax\MVC;
 /**
- * Model for Responsen.
+ * Model for Responses.
  *
  */
 class CResponsesModel implements \Anax\DI\IInjectionAware
@@ -67,6 +67,8 @@ class CResponsesModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return specific.
    *
+   * @param integer $id.
+   *
    * @return this
    */
     public function find($id)
@@ -96,6 +98,8 @@ class CResponsesModel implements \Anax\DI\IInjectionAware
 
     /**
    * Find and return all response to a specific question.
+   *
+   * @param integer $id.
    *
    * @return array
    */

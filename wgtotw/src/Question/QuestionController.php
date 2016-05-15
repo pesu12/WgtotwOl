@@ -106,7 +106,8 @@ class QuestionController implements \Anax\DI\IInjectionAware
       'id' => $id,
       'question' => $question,
       'title' => "Fråga",
-      'user' => $user,
+      'userid' => $user->Id,
+      'username' => $user->Username,
     ]);
 
     //Display comment to question
@@ -123,9 +124,17 @@ class QuestionController implements \Anax\DI\IInjectionAware
     endforeach;
 
     //Add comment to question
-    $this->di->views->add('questions/viewaddquestioncommentlink', [
-      'id' => $id,
-    ]);
+    //The comment can only be added when the user is logged in.
+    $users=$this->users->findAll();
+    foreach ($users as $user) :
+       $loggedIn=$this->users->checkIfLoggedIn($user->Id);
+       if ($loggedIn) {
+          $this->di->views->add('questions/viewaddquestioncommentlink', [
+            'id' => $id,
+            'userid' => $user->Id,
+          ]);
+       }
+    endforeach;
 
     //Display response to question
     $this->di->views->add('questions/viewtitle', [
@@ -139,7 +148,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
       $this->views->add('questions/viewresponses', [
         'id' => $id,
         'response' => $response,
-        'userid' => $user->Id,
+        'userid' => $Userid->Userid,
         'username' => $user->Username,
       ]);
       $comments = $this->questions->findallResponsecomments($response->Id);
@@ -153,20 +162,37 @@ class QuestionController implements \Anax\DI\IInjectionAware
         ]);
       endforeach;
       //Add comment to response
-      $this->di->views->add('questions/viewaddresponsecommentlink', [
-        'responseid' => $response->Id,
-      ]);
+      //The comment can only be added when the user is logged in.
+      $users=$this->users->findAll();
+      foreach ($users as $user) :
+         $loggedIn=$this->users->checkIfLoggedIn($user->Id);
+         if ($loggedIn) {
+              $this->di->views->add('questions/viewaddresponsecommentlink', [
+              'responseid' => $response->Id,
+              'userid' => $user->Id,
+          ]);
+         }
+      endforeach;
     endforeach;
 
     //Add response to question
-    $this->di->views->add('questions/viewaddresponselink', [
-      'id' => $id,
-    ]);
+    //The response can only be added when the user is logged in.
+    $users=$this->users->findAll();
+    foreach ($users as $user) :
+       $loggedIn=$this->users->checkIfLoggedIn($user->Id);
+       if ($loggedIn) {
+          $this->di->views->add('questions/viewaddresponselink', [
+            'id' => $id,
+            'userid' => $user->Id,
+          ]);
+       }
+    endforeach;
   }
 
   /**
   * Index action.
   *
+  * @return void
   */
   public function indexAction()
   {
@@ -182,11 +208,23 @@ class QuestionController implements \Anax\DI\IInjectionAware
       $user = $this->users->find($Userid->Userid);
       $this->views->add('questions/viewwithouttitle', [
         'question' => $question,
-        'user' => $user
+        'username' => $user->Username,
+        'userid' => $user->Id,
       ]);
     endforeach;
 
-    $this->di->views->add('questions/viewaddquestionlink', [
-    ]);
+    //The question can only be added when the user is logged in.
+    $users=$this->users->findAll();
+    $inlogged=false;
+    foreach ($users as $user) :
+      $loggedIn=$this->users->checkIfLoggedIn($user->Id);
+      if ($loggedIn) {
+        $inlogged=true;
+      }
+    endforeach;
+    if ($inlogged) {
+        $this->di->views->add('questions/viewaddquestionlink', [
+        ]);
+    }
   }
 }

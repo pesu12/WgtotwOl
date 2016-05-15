@@ -67,6 +67,8 @@ class CUserResponseModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return specific.
    *
+   * @param integer $id.
+   *
    * @return this
    */
     public function find($id)
@@ -97,6 +99,8 @@ class CUserResponseModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return all response to a specific question.
    *
+   * @param integer $id.
+   *
    * @return array
    */
     public function findAllResponses($id)
@@ -112,6 +116,8 @@ class CUserResponseModel implements \Anax\DI\IInjectionAware
 
     /**
     * Find user to a specific response.
+    *
+    * @param integer $id.
     *
     * @return this
     */

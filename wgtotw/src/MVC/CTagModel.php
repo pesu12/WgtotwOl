@@ -67,6 +67,8 @@ class CTagModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return specific.
    *
+   * @param integer $id.
+   *
    * @return this
    */
     public function find($id)
@@ -97,6 +99,8 @@ class CTagModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return all questions for a tag.
    *
+   * @param integer $id.
+   *
    * @return array
    */
     public function findAllQuestions($id)
@@ -112,6 +116,8 @@ class CTagModel implements \Anax\DI\IInjectionAware
 
     /**
    * Find and return id for a tagname.
+   *
+   * @param string with tagname.
    *
    * @return this
    */

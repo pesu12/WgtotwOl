@@ -39,6 +39,7 @@ class FirstpageController implements \Anax\DI\IInjectionAware
   /**
   * Index action.
   *
+  * @return void
   */
   public function indexAction()
   {
@@ -61,23 +62,22 @@ class FirstpageController implements \Anax\DI\IInjectionAware
       $user = $this->users->find($Userid->Userid);
       $this->views->add('questions/viewwithouttitle', [
         'question' => $question,
-        'user' => $user
+        'userid' => $user->Id,
+        'username' => $user->Username,
       ]);
     endforeach;
 
-
-
     $this->di->views->add('tags/displayheader', [
-      'title' => "Mest populära tag"
+      'title' => "Mest populära taggar"
     ]);
 
     $questiontags = $this->questiontags->findMostPopularTag();
     foreach ($questiontags as $questiontag) :
-       $tag = $this->tags->find($questiontag->Tagid);
-       $this->views->add('tags/mostpopulartag', [
-         'tagid' => $questiontag->Tagid,
-         'tagname' => $tag->Tagname,
-       ]);
+      $tag = $this->tags->find($questiontag->Tagid);
+      $this->views->add('tags/mostpopulartag', [
+        'tagid' => $questiontag->Tagid,
+        'tagname' => $tag->Tagname,
+      ]);
     endforeach;
   }
 }

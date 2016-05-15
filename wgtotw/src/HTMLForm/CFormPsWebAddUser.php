@@ -100,7 +100,9 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
          'Email' => $_POST['addemail'],
          'Userpassword' => password_hash($_POST['addpassword'], PASSWORD_DEFAULT),
        ]);
-    $this->users->lastInsertedId();
+       $id=$this->users->lastInsertedId();
+       //Set session that user is logged in
+       $this->users->setLoggedIn($id);       
        $this->redirectTo('index.php/user/displayuser/'.$this->users->lastInsertedId());
     }
 

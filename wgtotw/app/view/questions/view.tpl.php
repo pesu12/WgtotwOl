@@ -1,5 +1,5 @@
-<h1><?=$title?></h1>
+<i><h2><?=$title?></h2></i>
 
-    <a href="<?= $this->url->create('me.php/User')."/id/". $user->Id?> "title="Namn" class="id"><?="Ställd av " . $user->Username?></a>
+    <i><a href="<?= $this->url->create('me.php/User')."/id/". $userid?> "title="Namn" class="id"><font color="green"><?="-" . $username?></font></a></i>
     <?=$question->Questionname?>
     </br>

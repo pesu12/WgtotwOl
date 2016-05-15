@@ -96,10 +96,10 @@ class TagController implements \Anax\DI\IInjectionAware
 
     $all = $this->tags->findAll();
 
-    $this->theme->setTitle("Visa alla taggar");
+    $this->theme->setTitle("Taggar");
     $this->views->add('tags/list-all', [
       'tags' => $all,
-      'title' => "Visa alla taggar",
+      'title' => "Taggar",
     ]);
   }
 }

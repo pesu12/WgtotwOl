@@ -81,10 +81,12 @@ class CFormAdminLoginUser extends \Anax\HTMLForm\CForm
     $this->users = new \Anax\User\User();
     $this->users->setDI($this->di);
     $all = $this->users->findAll();
+    //unset($_SESSION['loggedin']);
     foreach ($all as $user) :
-      if(($user->Username==$_POST['addname'])&&( password_verify ($_POST['addpassword'] , $user->Userpassword ))) {
+        if(($user->Username==$_POST['addname'])&&( password_verify ($_POST['addpassword'] , $user->Userpassword ))) {
+          //Set session that user is logged in
+          $this->users->setLoggedIn($user->Id);
           $this->redirectTo('index.php/user/displayuser/'.$user->Id);
-      } else {
       }
     endforeach;
   }

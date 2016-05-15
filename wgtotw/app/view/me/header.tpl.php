@@ -3,6 +3,4 @@
 
 <span class='login'>
 <b><a href="<?= $this->url->create('me.php/User/add').'?id=new'?> "title="skapa användare" class="newUser">Registrera ny användare</a></b>
-<b><a href="<?= $this->url->create('me.php/User/login').'?id=login'?> "title="logga in med användare" class="loginUser">Logga in</a></b>
-
 </span>

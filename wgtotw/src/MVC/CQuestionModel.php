@@ -67,6 +67,8 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return specific.
    *
+   * @param integer $id to.
+   *
    * @return this
    */
     public function find($id)
@@ -107,6 +109,8 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return all response to a specific question.
    *
+   * @param integer $id to.
+   *
    * @return array
    */
     public function findAllResponses($id)
@@ -122,6 +126,8 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
 
     /**
    * Find and return all comments to a specific question.
+   *
+   * @param integer $id to.
    *
    * @return array
    */
@@ -139,6 +145,8 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return all comments to a specific question response.
    *
+   * @param integer $id.
+   *
    * @return array
    */
     public function findallResponsecomments($id)
@@ -154,6 +162,8 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
 
     /**
    * Find and return all tags to a specific question.
+   *
+   * @param integer $id.
    *
    * @return array
    */

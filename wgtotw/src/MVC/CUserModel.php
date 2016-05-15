@@ -67,6 +67,8 @@ class CUserModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return specific.
    *
+   * @param integer $id.
+   *
    * @return this
    */
     public function find($id)
@@ -81,6 +83,8 @@ class CUserModel implements \Anax\DI\IInjectionAware
 
     /**
    * Find and return specific.
+   *
+   * @param integer $id.
    *
    * @return this
    */
@@ -113,6 +117,8 @@ class CUserModel implements \Anax\DI\IInjectionAware
     /**
    * Find and return all questions for a user.
    *
+   * @param integer $id.
+   *
    * @return array
    */
     public function findQuestionsForUser($id)
@@ -128,6 +134,8 @@ class CUserModel implements \Anax\DI\IInjectionAware
 
     /**
     * Find and return all responses for a user.
+    *
+    * @param integer $id.
     *
     * @return array
     */
@@ -274,6 +282,43 @@ public function saveToDB($values = [])
       $users[$id] = $user;
       $this->session->set('User', $users);
       $this->update($users[$id]);
+    }
+
+    /**
+    * set login.
+    *
+    * @param $id with user id number.
+    *
+    * @return void
+    */
+    public function setLoggedIn($id)
+    {
+    $this->session->set('userId', $id);
+    }
+
+    /**
+    * set logged out.
+    *
+    * @return void
+    */
+    public function setLoggedOut()
+    {
+      if ($this->session->get('userId')!='') {
+         $this->session->set('userId',null);
+     }
+    }
+
+    /**
+    *Check if the User is logged in or not.
+    *
+    * @return void
+    */
+    public function checkIfLoggedIn($userIdToCheck)
+    {
+      if ($this->session->get('userId')==$userIdToCheck) {
+         return true;
+      }
+      return false;
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Anax\User;
 
 /**
-* A controller for users and admin related events.
+* A controller for users.
 *
 */
 class UserController implements \Anax\DI\IInjectionAware
@@ -24,43 +24,102 @@ class UserController implements \Anax\DI\IInjectionAware
   /**
   * Add new user.
   *
-  * @param string $acronym of user to add.
-  *
   * @return void
   */
   public function addAction()
   {
     $this->di->session();
     $this->users->theme->addStylesheet('css/anax-grid/style.php');
+
+    $this->di->views->add('questions/viewtitle', [
+      'title' => "Lägga till ny användare"
+    ]);
+
     $form = new \Anax\HTMLForm\CFormPsWebAddUser();
     $form->setDI($this->di);
     $form->check();
-    $this->di->theme->setTitle("Lägg till ny användare");
     $this->di->views->add('default/page', [
-      'title' => "Lägg till ny användare",
+      'title' => "",
       'content' => $form->getHTML()
     ]);
   }
 
   /**
-   *login with user.
-   *
-   * @param string $acronym of user to add.
-   *
-   * @return void
-   */
+  *login or login with user depending on the user is already logged in or not.
+  *
+  * @return void
+  */
+  public function loginlogoutAction()
+  {
+    $users=$this->users->findAll();
+    foreach ($users as $user) :
+      $loggedIn=$this->users->checkIfLoggedIn($user->Id);
+      if ($loggedIn) {
+        $url = $this->url->create('index.php/User/logout');
+        $this->response->redirect($url);
+      }
+    endforeach;
+    $url = $this->url->create('index.php/User/login');
+    $this->response->redirect($url);
+  }
+
+
+  /**
+  *login with user.
+  *
+  * @param string $acronym of user to add.
+  *
+  * @return void
+  */
   public function loginAction()
   {
-     $this->di->session();
-     $this->users->theme->addStylesheet('css/anax-grid/style.php');
-     $form = new \Anax\HTMLForm\CFormAdminLoginUser();
-     $form->setDI($this->di);
-     $form->check();
-     $this->di->theme->setTitle("Logga in");
-     $this->di->views->add('default/page', [
-       'title' => "Logga in",
-       'content' => $form->getHTML()
-     ]);
+    $this->di->session();
+    $this->users->theme->addStylesheet('css/anax-grid/style.php');
+
+    $this->di->views->add('questions/viewtitle', [
+      'title' => "Logga in"
+    ]);
+
+    $form = new \Anax\HTMLForm\CFormAdminLoginUser();
+    $form->setDI($this->di);
+    $form->check();
+
+    $this->di->views->add('default/page', [
+      'title' => "",
+      'content' => $form->getHTML()
+    ]);
+
+    //Link to register new user
+    $this->views->add('users/viewaddnewuserlink', [
+      'title' => "",
+    ]);
+  }
+
+  /**
+  *logout user.
+  *
+  * @return void
+  */
+  public function logoutAction()
+  {
+    $this->users->setLoggedOut();
+    $this->views->add('users/viewmakelogout', [
+    ]);
+  }
+
+  /**
+  *Check if the User is logged in or not.
+  *
+  * @param string $userIdToCheck of user to check.
+  *
+  * @return void
+  */
+  public function checkIfLoggedInAction($userIdToCheck)
+  {
+    if ($this->session->get('userId')==$userIdToCheck) {
+      return true;
+    }
+    return false;
   }
 
 
@@ -69,73 +128,77 @@ class UserController implements \Anax\DI\IInjectionAware
   *
   * @param integer $id of user to display delete for.
   *
+  * @param string $User id
+  *
   * @return void
   */
 
   public function displayuserAction($id = null)
   {
-    $this->users->setDI($this->di);
-    $this->users->theme->addStylesheet('css/anax-grid/style.php');
-    $user = $this->users->find($id);
-    $this->theme->setTitle("Användare");
-    $this->views->add('users/viewuser', [
-        'id' => $id,
-        'user' => $user,
-        'title' => "Användare",
-      ]);
+    //Check to see if the user is logged in and allowed to displayd
+    //user data.
+    $users=$this->users->findAll();
+    $inlogged=false;
+    foreach ($users as $user) :
+      $loggedIn=$this->users->checkIfLoggedIn($user->Id);
+      if ($loggedIn) {
+        $inlogged=true;
+        $this->users->setDI($this->di);
+        $this->users->theme->addStylesheet('css/anax-grid/style.php');
+        $user = $this->users->find($id);
+        $this->theme->setTitle("Användare");
+        $this->views->add('users/viewuser', [
+          'id' => $id,
+          'user' => $user,
+          'title' => "Användare",
+        ]);
 
-      $this->users->setDI($this->di);
-      $this->views->add('users/viewuserupdatelink', [
-        'id' => $id,
-        'title' => "",
-      ]);
+        $this->users->setDI($this->di);
+        $this->views->add('users/viewuserupdatelink', [
+          'id' => $id,
+          'title' => "",
+        ]);
 
-    $this->users->setDI($this->di);
-    $all = $this->users->findQuestionsForUser($id);
-    $this->theme->setTitle("Ställda frågor av användare");
-    $this->views->add('users/viewuserquestions', [
-      'questions' => $all,
-      'title' => "Ställda frågor av användaren",
-    ]);
-    $this->users->setDI($this->di);
-    $this->views->add('users/viewaddquestionlink', [
-      'id' => $id,
-      'title' => "",
-    ]);
+        $this->users->setDI($this->di);
+        $all = $this->users->findQuestionsForUser($id);
+        $this->theme->setTitle("Ställda frågor av användare");
+        $this->views->add('users/viewuserquestions', [
+          'questions' => $all,
+          'title' => "Ställda frågor av användaren",
+        ]);
+        $this->users->setDI($this->di);
+        $this->views->add('users/viewaddquestionlink', [
+          'id' => $id,
+          'title' => "",
+        ]);
 
-    $this->users->setDI($this->di);
-    $allresponses = $this->users->findResponsesForUser($id);
-    $this->theme->setTitle("Mina svar");
-    foreach ($allresponses as $response) :
-       $questionId = $this->users->findRequestForResponse($response->Id);
-       $this->views->add('users/viewuserresponses', [
-         'response' => $response,
-         'questionid' => $questionId->Questionid,
-         'title' => "",
-       ]);
+        $this->di->views->add('questions/viewtitle', [
+          'title' => "Besvarade frågor av användare"
+        ]);
+
+        $this->users->setDI($this->di);
+        $allresponses = $this->users->findResponsesForUser($id);
+        $this->theme->setTitle("Mina svar");
+        foreach ($allresponses as $response) :
+          $questionId = $this->users->findRequestForResponse($response->Id);
+          $this->views->add('users/viewuserresponses', [
+            'response' => $response,
+            'questionid' => $questionId->Questionid,
+            'title' => "",
+          ]);
+        endforeach;
+
+        $this->di->views->add('users/viewlogoutlink', [
+          'title' => ""
+        ]);
+      }
     endforeach;
 
-    $this->users->setDI($this->di);
-    $this->views->add('users/viewaddresponselink', [
-      'id' => $id,
-      'title' => "",
-    ]);
+    //If no user is logged in the display text that user must be logged in
+    //to display page for displayuserAction.
+    if ($loggedIn==false) {
 
-    $this->users->setDI($this->di);
-    $this->views->add('users/viewaddquestioncommentlink', [
-      'id' => $id,
-      'title' => "",
-    ]);
-
-    $this->users->setDI($this->di);
-    $this->views->add('users/viewaddresponsecommentlink', [
-      'id' => $id,
-      'title' => "",
-    ]);
-
-    $this->di->views->add('users/viewlogoutlink', [
-      'title' => ""
-    ]);
+    }
   }
 
   /**
@@ -175,8 +238,8 @@ class UserController implements \Anax\DI\IInjectionAware
     $form->check();
 
     $this->di->views->add('default/page', [
-        'title' => "Uppdatera användare",
-        'content' => $form->getHTML()
+      'title' => "Uppdatera användare",
+      'content' => $form->getHTML()
     ]);
 
     $this->di->views->add('users/notupdatepassword', [
@@ -185,35 +248,34 @@ class UserController implements \Anax\DI\IInjectionAware
   }
 
   /**
-* Save an editid user.
-*
-* @param $id with user id number.
-*
-* @return void
-*/
-public function saveEditAction($id)
-{
-  $isPosted = $this->request->getPost('doSaveEdit');
+  * Save an editid user.
+  *
+  * @param $id with user id number.
+  *
+  * @return void
+  */
+  public function saveEditAction($id)
+  {
+    $isPosted = $this->request->getPost('doSaveEdit');
 
-  if (!$isPosted) {
+    if (!$isPosted) {
+      $this->response->redirect($this->request->getPost('redirect'));
+    }
+
+    $users = new \Anax\MVC\CUserModel();
+    $users->setDI($this->di);
+
+    $editedUser = [
+      'Id' => $id,
+      'Username'      => $this->request->getPost('Username'),
+      'Acronym'       => $this->request->getPost('Acronym'),
+      'Email'      => $this->request->getPost('Email'),
+      'Userpassword'      => 'test',
+    ];
+
+    $users->update($editedUser);
     $this->response->redirect($this->request->getPost('redirect'));
   }
-
-  $users = new \Anax\MVC\CUserModel();
-  $users->setDI($this->di);
-
-  $editedUser = [
-    'Id' => $id,
-    'Username'      => $this->request->getPost('Username'),
-    'Acronym'       => $this->request->getPost('Acronym'),
-    'Email'      => $this->request->getPost('Email'),
-    'Userpassword'      => 'test',
-  ];
-
-  $users->update($editedUser);
-
-//  $this->response->redirect($this->request->getPost('redirect'));
-}
 
 
   /**
@@ -264,31 +326,32 @@ public function saveEditAction($id)
 
     $this->users->setDI($this->di);
     $all = $this->users->findQuestionsForUser($id);
-    $this->theme->setTitle("Mina Ställda Frågor");
+    $this->theme->setTitle("Ställda Frågor");
     $this->views->add('users/viewuserquestions', [
       'questions' => $all,
-      'title' => "Frågor",
+      'title' => "Ställda Frågor",
     ]);
 
     $this->users->setDI($this->di);
     $allresponses = $this->users->findResponsesForUser($id);
 
     $this->di->views->add('users/viewtitle', [
-      'title' => "Mina svar"
+      'title' => "Gjorda svar"
     ]);
 
     foreach ($allresponses as $response) :
-       $questionId = $this->users->findRequestForResponse($response->Id);
-       $this->views->add('users/viewuserresponses', [
-         'response' => $response,
-         'questionid' => $questionId->Questionid,
-         'title' => "",
-       ]);
+      $questionId = $this->users->findRequestForResponse($response->Id);
+      $this->views->add('users/viewuserresponses', [
+        'response' => $response,
+        'questionid' => $questionId->Questionid,
+        'title' => "",
+      ]);
     endforeach;
   }
   /**
   * Index action.
   *
+  * @return void
   */
   public function indexAction()
   {
