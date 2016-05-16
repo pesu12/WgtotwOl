@@ -19,23 +19,32 @@ class CommentController implements \Anax\DI\IInjectionAware
   {
     $this->di->session();
     if($_GET['type'] === "question") {
+
+      $this->di->session();
+      $this->di->views->add('comment/viewtitle', [
+        'title' => "Lägg till kommentar till en fråga"
+      ]);
+
       $form = new \Anax\HTMLForm\CFormQuestionCommentAdd($_GET['id'],$_GET['userid']);
       $form->setDI($this->di);
       $form->check();
-      $this->di->theme->setTitle("Lägg till kommentar till en fråga");
+      $this->di->theme->setTitle("");
       $this->di->views->add('default/page', [
-        'title' => "Lägg till kommentar till en fråga",
+        'title' => "",
         'content' => $form->getHTML()
       ]);
     }
 
     if($_GET['type'] === "response") {
-      $form = new \Anax\HTMLForm\CFormResponseCommentAdd($_GET['id'],$_GET['userid']);
+      $this->di->session();
+      $this->di->views->add('comment/viewtitle', [
+        'title' => "Lägg till kommentar till ett svar"
+      ]);
+      $form = new \Anax\HTMLForm\CFormResponseCommentAdd($_GET['id'],$_GET['userid'],$_GET['questionid']);
       $form->setDI($this->di);
-      $form->check();
-      $this->di->theme->setTitle("Lägg till kommentar till ett svar");
+      $form->check();;
       $this->di->views->add('default/page', [
-        'title' => "Lägg till kommentar till ett svar",
+        'title' => "",
         'content' => $form->getHTML()
       ]);
     }

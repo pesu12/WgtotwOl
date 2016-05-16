@@ -17,8 +17,8 @@ class UserQuestionController implements \Anax\DI\IInjectionAware
   */
   public function initialize()
   {
-    $this->questiontags = new \Anax\UserQuestion\UserQuestions();
-    $this->questiontags->setDI($this->di);
+    $this->userquestions = new \Anax\UserQuestion\UserQuestions();
+    $this->userquestions->setDI($this->di);
   }
 
   /**
@@ -78,6 +78,21 @@ class UserQuestionController implements \Anax\DI\IInjectionAware
       'responses' => $allResponses,
       'title' => "Svar till frågan",
     ]);
+  }
+
+  /**
+   * Delete user question.
+   *
+   * @param integer $id of user question to delete.
+   *
+   * @return void
+   */
+  public function deleteAction($id = null)
+  {
+      if (!isset($id)) {
+          die("Missing id");
+      }
+      $res = $this->questions->delete($id);
   }
 
   /**

@@ -84,7 +84,7 @@ class CFormResponseAdd extends \Anax\HTMLForm\CForm
     $this->responses = new \Anax\Responses\Responses();
     $this->responses->setDI($this->di);
     $this->responses->save([
-       'Responseheader' => $this->filter->markdown($_POST['addheader']),
+       'Responseheader' => $_POST['addheader'],
        'Responsename' => $this->filter->markdown($_POST['addresponse']),
      ]);
 
@@ -104,7 +104,7 @@ class CFormResponseAdd extends \Anax\HTMLForm\CForm
         'Responseid' => $latestresponse,
       ]);
 
-    // $this->redirectTo('index.php/user');
+      $this->redirectTo('index.php/question/id/' . $_POST['questionid']);
   }
 
   /**

@@ -58,7 +58,7 @@ public function delete($id)
 {
   $this->db->delete(
   $this->getSource(),
-  'id = ?'
+  'Questionid = ?'
 );
 
 return $this->db->execute([$id]);
@@ -128,6 +128,21 @@ public function findAllTags($id)
   ->where("Question.Id=QuestionTag.Questionid and Tag.Id=QuestionTag.Tagid and Question.Id = ?");
 
   $this->db->execute([$id]);
+  $this->db->setFetchModeClass(__CLASS__);
+  return $this->db->fetchAll();
+}
+
+/**
+* Find and return all latest questiontags.
+*
+* @return array
+*/
+public function findLatestrow()
+{
+  $this->db->select("Questionid")
+           ->from("QuestionTag order by Questionid desc limit 1");
+
+  $this->db->execute();
   $this->db->setFetchModeClass(__CLASS__);
   return $this->db->fetchAll();
 }

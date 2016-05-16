@@ -88,11 +88,6 @@ class UserController implements \Anax\DI\IInjectionAware
       'title' => "",
       'content' => $form->getHTML()
     ]);
-
-    //Link to register new user
-    $this->views->add('users/viewaddnewuserlink', [
-      'title' => "",
-    ]);
   }
 
   /**
@@ -135,14 +130,8 @@ class UserController implements \Anax\DI\IInjectionAware
 
   public function displayuserAction($id = null)
   {
-    //Check to see if the user is logged in and allowed to displayd
-    //user data.
+
     $users=$this->users->findAll();
-    $inlogged=false;
-    foreach ($users as $user) :
-      $loggedIn=$this->users->checkIfLoggedIn($user->Id);
-      if ($loggedIn) {
-        $inlogged=true;
         $this->users->setDI($this->di);
         $this->users->theme->addStylesheet('css/anax-grid/style.php');
         $user = $this->users->find($id);
@@ -191,14 +180,6 @@ class UserController implements \Anax\DI\IInjectionAware
         $this->di->views->add('users/viewlogoutlink', [
           'title' => ""
         ]);
-      }
-    endforeach;
-
-    //If no user is logged in the display text that user must be logged in
-    //to display page for displayuserAction.
-    if ($loggedIn==false) {
-
-    }
   }
 
   /**
@@ -237,8 +218,12 @@ class UserController implements \Anax\DI\IInjectionAware
     $form->setDI($this->di);
     $form->check();
 
+    $this->di->views->add('questions/viewtitle', [
+      'title' => "Uppdatera användare"
+    ]);
+
     $this->di->views->add('default/page', [
-      'title' => "Uppdatera användare",
+      'title' => "",
       'content' => $form->getHTML()
     ]);
 
@@ -323,6 +308,19 @@ class UserController implements \Anax\DI\IInjectionAware
       'user' => $user,
       'title' => "Användare",
     ]);
+
+    $loggedIn=$this->users->checkIfLoggedIn($id);
+    if ($loggedIn) {
+
+       $this->users->setDI($this->di);
+       $this->views->add('users/viewuserupdatelink', [
+         'id' => $id,
+         'title' => "",
+       ]);
+       $this->di->views->add('questions/viewaddquestionlink', [
+        'id' => $id,
+       ]);
+    }
 
     $this->users->setDI($this->di);
     $all = $this->users->findQuestionsForUser($id);

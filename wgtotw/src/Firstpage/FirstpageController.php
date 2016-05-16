@@ -34,6 +34,12 @@ class FirstpageController implements \Anax\DI\IInjectionAware
 
     $this->userquestion = new \Anax\UserQuestion\UserQuestion();
     $this->userquestion->setDI($this->di);
+
+    $this->userresponse = new \Anax\UserResponse\UserResponse();
+    $this->userresponse->setDI($this->di);
+
+    $this->comment = new \Anax\Comment\Comment();
+    $this->comment->setDI($this->di);
   }
 
   /**
@@ -43,38 +49,74 @@ class FirstpageController implements \Anax\DI\IInjectionAware
   */
   public function indexAction()
   {
+    $popularuser = array();
+    //For Most active users
+    //Get UserId for all UserQuestions and add them to $popularuser list.
+    $alluserquestions=$this->userquestion->findAll();
+    foreach ($alluserquestions as $popularuserquestion) :
+      array_push($popularuser,$popularuserquestion->Userid);
+    endforeach;
+    //Get UserId for all UserResponses and add them to $popularuser list.
+    $alluserresponses=$this->userresponse->findAll();
+    foreach ($alluserresponses as $popularuserresponse) :
+      array_push($popularuser,$popularuserresponse->Userid);
+    endforeach;
 
-    $activeusers = $this->users->findMostActiveUsers();
-    $this->theme->setTitle("Mest aktiva användare");
-    $this->views->add('users/listactiveusers', [
-      'users' => $activeusers,
-      'title' => "Mest aktiva användare",
+    //Get userId for all comments and add them to $popularuser list.
+    $allcomments=$this->comment->findAll();
+    foreach ($allcomments as $popularusercomments) :
+      array_push($popularuser,$popularuserresponse->Userid);
+    endforeach;
+
+    //Buid a list with the keys and the values
+    $popularuserlist=(array_count_values($popularuser));
+
+    //Sort the list
+    arsort($popularuserlist);
+
+    //Extract the keys
+    $k = array_keys($popularuserlist);
+
+    //Display the first two keys as userId and UserNames
+    $this->di->views->add('firstpage/viewtitle', [
+      'title' => "Mest aktiva användare"
     ]);
 
-    $latestquestions = $this->questions->findLatestQuestions();
+    for ($i=0;$i<2;$i++) {
+      $activeusers = $this->users->find($k[$i]);
+      $this->views->add('firstpage/listactiveusers', [
+        'userid' => $activeusers->Id,
+        'username' => $activeusers->Username,
+        'title' => "",
+      ]);
+    }
 
-    $this->di->views->add('questions/viewtitle', [
-      'title' => "Senaste frågan"
+
+    //For the 2 latest questions
+    $latestquestions = $this->questions->findLatestQuestions();
+    $this->di->views->add('firstpage/viewtitlelatestquestions', [
+      'title' => "Senaste frågorna"
     ]);
 
     foreach ($latestquestions as $question) :
       $Userid = $this->userquestion->findUserToQuestion($question->Id);
       $user = $this->users->find($Userid->Userid);
-      $this->views->add('questions/viewwithouttitle', [
+      $this->views->add('firstpage/viewwithouttitle', [
         'question' => $question,
         'userid' => $user->Id,
         'username' => $user->Username,
       ]);
     endforeach;
 
-    $this->di->views->add('tags/displayheader', [
-      'title' => "Mest populära taggar"
+    //Display 2 most popular tags
+    $this->di->views->add('firstpage/viewtitle', [
+      'title' => "Mest populära taggarna"
     ]);
 
     $questiontags = $this->questiontags->findMostPopularTag();
     foreach ($questiontags as $questiontag) :
       $tag = $this->tags->find($questiontag->Tagid);
-      $this->views->add('tags/mostpopulartag', [
+      $this->views->add('firstpage/mostpopulartag', [
         'tagid' => $questiontag->Tagid,
         'tagname' => $tag->Tagname,
       ]);

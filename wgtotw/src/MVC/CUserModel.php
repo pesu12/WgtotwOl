@@ -150,20 +150,6 @@ class CUserModel implements \Anax\DI\IInjectionAware
        return $this->db->fetchAll();
      }
 
-     /**
-    * Find and return most active users.
-    *
-    * @return array
-    */
-     public function findMostActiveUsers()
-     {
-       $this->db->select("Id,Username")
-                ->from("User group by Id order by count(*) desc limit 2");
-
-       $this->db->execute();
-       $this->db->setFetchModeClass(__CLASS__);
-       return $this->db->fetchAll();
-     }
 
     /**
      * Execute the query built.

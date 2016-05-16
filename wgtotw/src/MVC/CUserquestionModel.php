@@ -58,7 +58,7 @@ public function delete($id)
 {
   $this->db->delete(
   $this->getSource(),
-  'id = ?'
+  'Questionid = ?'
 );
 
 return $this->db->execute([$id]);
@@ -90,6 +90,21 @@ public function findAll()
 {
   $this->db->select()
   ->from($this->getSource());
+
+  $this->db->execute();
+  $this->db->setFetchModeClass(__CLASS__);
+  return $this->db->fetchAll();
+}
+
+/**
+* Find and return all latest userquestions.
+*
+* @return array
+*/
+public function findLatestrow()
+{
+  $this->db->select("Questionid")
+           ->from("UserQuestion order by Questionid desc limit 1");
 
   $this->db->execute();
   $this->db->setFetchModeClass(__CLASS__);
@@ -230,11 +245,7 @@ public function save($values = [])
   $this->setProperties($values);
   $values = $this->getProperties();
 
-  if (isset($values['id'])) {
-    return $this->update($values);
-  } else {
-    return $this->create($values);
-  }
+  return $this->create($values);
 }
 
 /**

@@ -170,6 +170,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
               $this->di->views->add('questions/viewaddresponsecommentlink', [
               'responseid' => $response->Id,
               'userid' => $user->Id,
+              'questionId' => $id,
           ]);
          }
       endforeach;
@@ -188,6 +189,22 @@ class QuestionController implements \Anax\DI\IInjectionAware
        }
     endforeach;
   }
+
+  /**
+   * Delete question.
+   *
+   * @param integer $id of question to delete.
+   *
+   * @return void
+   */
+  public function deleteAction($id = null)
+  {
+      if (!isset($id)) {
+          die("Missing id");
+      }
+      $res = $this->questions->delete($id);
+  }
+
 
   /**
   * Index action.
@@ -224,6 +241,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
     endforeach;
     if ($inlogged) {
         $this->di->views->add('questions/viewaddquestionlink', [
+          'id' => $user->Id,
         ]);
     }
   }

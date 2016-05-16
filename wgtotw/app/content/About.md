@@ -1,5 +1,5 @@
 *Om WGTOTW*
-====================================
+----------------------
 
 WGTOTW (We Gonna Take Over The World) är ett företag som har
 funnits sedan 2010 och kommer ifrån Karlskrona i Sverige.

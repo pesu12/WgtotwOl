@@ -80,7 +80,8 @@ class TagController implements \Anax\DI\IInjectionAware
       $user = $this->users->find($Userid->Userid);
       $this->views->add('questions/viewwithouttitle', [
         'question' => $question,
-        'user' => $user
+        'username' => $user->Username,
+        'userid' => $user->Id,
       ]);
     endforeach;
 

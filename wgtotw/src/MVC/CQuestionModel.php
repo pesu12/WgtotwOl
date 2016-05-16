@@ -103,7 +103,10 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
    */
     public function lastInsertedId()
     {
-        return $this->db->lastInsertId();
+      $this->db->select('Id from Question order by Id desc limit 1;');
+
+      $this->db->execute();
+      return $this->db->fetchInto($this);
     }
 
     /**
@@ -186,12 +189,13 @@ class CQuestionModel implements \Anax\DI\IInjectionAware
     public function findLatestQuestions()
     {
       $this->db->select("Id,Questionheader")
-               ->from("Question order by Id desc limit 1");
+               ->from("Question order by Id desc limit 2");
 
       $this->db->execute();
       $this->db->setFetchModeClass(__CLASS__);
       return $this->db->fetchAll();
     }
+
     /**
      * Execute the query built.
      *

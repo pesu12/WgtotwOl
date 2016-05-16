@@ -1,6 +1,6 @@
 <i><h2><?=$title?></h2></i>
 
-<table style="width:100%">
+<table style="width:50%">
   <tr>
     <td>
       Nam: <?=$user->Username?></br>

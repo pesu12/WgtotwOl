@@ -30,13 +30,18 @@ class ResponsesController implements \Anax\DI\IInjectionAware
     {
        $id = $this->request->getGet('id');
        $userid = $this->request->getGet('userid');
+
+       $this->di->session();
+       $this->di->views->add('questionresponses/viewtitle', [
+         'title' => "Svara på fråga"
+       ]);
+
        $this->di->session();
        $form = new \Anax\HTMLForm\CFormResponseAdd($id,$userid);
        $form->setDI($this->di);
        $form->check();
-       $this->di->theme->setTitle("Svara på fråga");
        $this->di->views->add('default/page', [
-         'title' => "Svara på fråga",
+         'title' => "",
          'content' => $form->getHTML()
        ]);
     }
@@ -68,22 +73,5 @@ class ResponsesController implements \Anax\DI\IInjectionAware
          'title' => "Svar till frågan",
        ]);
 
-
-    }
-
-    /**
-     * Index action.
-     *
-     */
-    public function indexAction()
-    {
-
-      $all = $this->questions->findAll();
-
-      $this->theme->setTitle("Visa alla frågor");
-      $this->views->add('questions/list-all', [
-          'questions' => $all,
-          'title' => "Visa alla frågor",
-      ]);
     }
 }

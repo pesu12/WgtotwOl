@@ -12,11 +12,12 @@ class CFormResponseCommentAdd extends \Anax\HTMLForm\CForm
    * Constructor
    *
    */
-   public function __construct($id,$userid)
+   public function __construct($id,$userid,$questionid)
    {
 
      $_POST['responseid']=$id;
      $_POST['userid']=$userid;
+     $_POST['questionid']=$questionid;
 
      parent::__construct([], [
 
@@ -85,7 +86,7 @@ class CFormResponseCommentAdd extends \Anax\HTMLForm\CForm
        'Userid' => $_POST['userid'],
      ]);
 
-        $this->redirectTo('index.php/question');
+      $this->redirectTo('index.php/question/id/' . $_POST['questionid']);
   }
 
   /**

@@ -18,21 +18,21 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
     $_POST['addid']=$id;
 
     parent::__construct([], [
-      'addheader' => [
+      'header' => [
         'type'        => 'text',
         'label'       => 'Titel för fråga:',
         'required'    => true,
         'validation'  => ['not_empty'],
       ],
 
-      'addquestion' => [
+      'question' => [
         'type'        => 'text',
         'label'       => 'Fråga:',
         'required'    => true,
         'validation'  => ['not_empty'],
       ],
 
-      'addtag' => [
+      'tag' => [
         'type'        => 'text',
         'label'       => 'Tag:',
         'required'    => true,
@@ -90,19 +90,20 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
     $this->filter = new \Anax\Content\CTextFilter();
     $this->questions = new \Anax\Question\Question();
     $this->questions->setDI($this->di);
+    $this->userquestion = new \Anax\UserQuestion\UserQuestion();
+    $this->userquestion->setDI($this->di);
+
+    //Save question
     $this->questions->save([
-      'Questionheader' => $_POST['addheader'],
-      'Questionname' => $this->filter->markdown($_POST['addquestion']),
+      'Questionheader' => $_POST['header'],
+      'Questionname' => $this->filter->markdown($_POST['question']),
     ]);
 
     $latestquestion=$this->questions->lastInsertedId();
-
-    $this->userquestion = new \Anax\UserQuestion\UserQuestion();
-    $this->userquestion->setDI($this->di);
-    $this->userquestion->save([
-      'Userid' => $_POST['addid'],
-      'Questionid' => $latestquestion,
-    ]);
+      $this->userquestion->save([
+        'Userid' => $_POST['addid'],
+        'Questionid' => $latestquestion->Id,
+      ]);
 
     $this->tags = new \Anax\Tag\Tag();
     $this->tags->setDI($this->di);
@@ -111,26 +112,74 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
     $this->questiontag->setDI($this->di);
 
     //If only one tag is specified
-    $containkommas = strpos($_POST['addtag'], ",");
+    $containkommas = strpos($_POST['tag'], ",");
     if ($containkommas == false) {
-      $tagId=$this->tags->findIdForTag($_POST['addtag']);
-      $this->questiontag->save([
-        'Questionid' => $latestquestion,
-        'Tagid' => $tagId->Id,
-      ]);
-      //If several tags were specified with kommas in between
-    } else {
-      $tags = explode( ',', $_POST['addtag'] );
-      foreach ($tags as $tag) :
-        $tagId=$this->tags->findIdForTag($tag);
-        $this->questiontag->create([
-          'Questionid' => $latestquestion,
+      $tagId=$this->tags->findIdForTag($_POST['tag']);
+      //If the tag is not valid
+      if ($tagId==false) {
+        //Make a rollback and delete latest question
+        //First we find the latest userquestion
+        $latestuserquestions=$this->userquestion->findLatestrow();
+        foreach ($latestuserquestions as $latestuserquestion) :
+          $this->userquestion->delete($latestuserquestion->Questionid);
+        endforeach;
+
+        //Here we are finding the latest question
+        $latestquestions=$this->questions->lastInsertedId();
+        foreach ($latestquestions as $question) :
+          $this->questions->delete($question->Id);
+        endforeach;
+        $this->callbackSubmitFail($form);
+      } else {
+        //Here we are finding the latest question
+        $latestquestions=$this->questions->lastInsertedId();
+        $this->questiontag->save([
+          'Questionid' => $latestquestions->Id,
           'Tagid' => $tagId->Id,
         ]);
+        $this->redirectTo('index.php/Question');
+      }
+      //If several tags were specified with kommas in between
+    } else {
+      $badtagfound=false;
+      $latestquestions=$this->questions->lastInsertedId();
+        $tags = explode( ',', $_POST['tag'] );
+        foreach ($tags as $tag) :
+          $tagId=$this->tags->findIdForTag($tag);
+          if ($tagId=='') {
+            $badtagfound=true;
+          } else
+           {$this->questiontag->create([
+             'Questionid' => $latestquestions->Id,
+             'Tagid' => $tagId->Id,
+           ]);
+          }
       endforeach;
-    }
 
-    $this->redirectTo('index.php/Question');
+      //If badtag is found then we roll back the whole question
+      if ($badtagfound==true) {
+        //Here we find the latest questiontags
+        $latestquestiontags=$this->questiontag->findLatestrow();
+        foreach ($latestquestiontags as $latestquestiontag) :
+          $this->questiontag->delete($latestquestiontag->Questionid);
+        endforeach;
+
+
+        //First we find the latest userquestion
+        $latestuserquestions=$this->userquestion->findLatestrow();
+        foreach ($latestuserquestions as $latestuserquestion) :
+          $this->userquestion->delete($latestuserquestion->Questionid);
+        endforeach;
+
+        //Here we are finding the latest question
+        $latestquestions=$this->questions->lastInsertedId();
+          $this->questions->delete($latestquestions->Id);
+        $this->callbackSubmitFail($form);
+        // If no faulty tag is found then we redirect to quesion page
+      } else {
+          $this->redirectTo('index.php/User');
+      }
+    }
   }
 
   /**
