@@ -237,6 +237,7 @@ class QuestionController implements \Anax\DI\IInjectionAware
       $loggedIn=$this->users->checkIfLoggedIn($user->Id);
       if ($loggedIn) {
         $inlogged=true;
+        break;
       }
     endforeach;
     if ($inlogged) {
