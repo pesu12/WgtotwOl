@@ -24,7 +24,7 @@ class CFormAdminLoginUser extends \Anax\HTMLForm\CForm
       ],
 
       'addpassword' => [
-        'type'        => 'text',
+        'type'        => 'password',
         'label'       => 'Lösenord:',
         'required'    => true,
         'validation'  => ['not_empty'],

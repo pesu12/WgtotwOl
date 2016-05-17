@@ -37,7 +37,7 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
          ],
 
          'addpassword' => [
-             'type'        => 'text',
+             'type'        => 'password',
              'label'       => 'Lösenord:',
              'required'    => true,
              'validation'  => ['not_empty'],
@@ -102,7 +102,7 @@ class CFormPsWebAddUser extends \Anax\HTMLForm\CForm
        ]);
        $id=$this->users->lastInsertedId();
        //Set session that user is logged in
-       $this->users->setLoggedIn($id);       
+       $this->users->setLoggedIn($id);
        $this->redirectTo('index.php/user/displayuser/'.$this->users->lastInsertedId());
     }
 
