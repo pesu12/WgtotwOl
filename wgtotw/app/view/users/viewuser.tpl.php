@@ -3,7 +3,7 @@
 <table style="width:50%">
   <tr>
     <td>
-      Nam: <?=$user->Username?></br>
+      Namn: <?=$user->Username?></br>
       Akronym: <?=$user->Acronym?></br>
       Email: <?=$user->Email?></br>
     </td>
