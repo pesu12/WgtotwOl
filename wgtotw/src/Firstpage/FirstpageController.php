@@ -82,14 +82,30 @@ class FirstpageController implements \Anax\DI\IInjectionAware
       'title' => "Mest aktiva användare"
     ]);
 
-    for ($i=0;$i<2;$i++) {
-      $activeusers = $this->users->find($k[$i]);
-      $this->views->add('firstpage/listactiveusers', [
-        'userid' => $activeusers->Id,
-        'username' => $activeusers->Username,
-        'title' => "",
-      ]);
-    }
+    //Verify if 2 users
+    $result = count($k);
+    if ($result==0) {}
+    if ($result==1) {
+       for ($i=0;$i<1;$i++) {
+          $activeusers = $this->users->find($k[$i]);
+          $this->views->add('firstpage/listactiveusers', [
+            'userid' => $activeusers->Id,
+            'username' => $activeusers->Username,
+            'title' => "",
+          ]);
+       }
+     }
+
+     if ($result>1) {
+        for ($i=0;$i<2;$i++) {
+           $activeusers = $this->users->find($k[$i]);
+           $this->views->add('firstpage/listactiveusers', [
+             'userid' => $activeusers->Id,
+             'username' => $activeusers->Username,
+             'title' => "",
+           ]);
+        }
+      }
 
 
     //For the 2 latest questions
