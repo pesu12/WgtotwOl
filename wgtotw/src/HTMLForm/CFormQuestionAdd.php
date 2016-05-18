@@ -112,12 +112,21 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
     $this->questiontag->setDI($this->di);
 
     //If only one tag is specified
+	$badtagfound=false;
     $containkommas = strpos($_POST['tag'], ",");
     if ($containkommas == false) {
       $tagId=$this->tags->findIdForTag($_POST['tag']);
+	  if ($tagId=='') {
+            $badtagfound=true;
+      }
       //If the tag is not valid
-      if ($tagId==false) {
-        //Make a rollback and delete latest question
+      if ($badtagfound==true) {
+        //Here we find the latest questiontags
+        $latestquestiontags=$this->questiontag->findLatestrow();
+        foreach ($latestquestiontags as $latestquestiontag) :
+          $this->questiontag->delete($latestquestiontag->Questionid);
+        endforeach;
+
         //First we find the latest userquestion
         $latestuserquestions=$this->userquestion->findLatestrow();
         foreach ($latestuserquestions as $latestuserquestion) :
@@ -126,11 +135,11 @@ class CFormQuestionAdd extends \Anax\HTMLForm\CForm
 
         //Here we are finding the latest question
         $latestquestions=$this->questions->lastInsertedId();
-        foreach ($latestquestions as $question) :
-          $this->questions->delete($question->Id);
-        endforeach;
+          $this->questions->delete($latestquestions->Id);
         $this->callbackSubmitFail($form);
+        // If no faulty tag is found then we redirect to quesion page
       } else {
+	    $badtagfound=false;
         //Here we are finding the latest question
         $latestquestions=$this->questions->lastInsertedId();
         $this->questiontag->save([
